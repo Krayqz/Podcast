@@ -105,7 +105,7 @@ dialog.quiz.wk{--c:var(--wk);--soft:var(--wk-soft);--ink:var(--wk-ink)}
 dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 .qz{display:flex;flex-direction:column;gap:16px;padding:22px}
 .qz-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.qz-top small{color:var(--muted);font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.qz-top small{min-width:0;color:var(--muted);font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .qz-x{appearance:none;border:0;background:var(--soft);color:var(--fg);width:40px;height:40px;border-radius:999px;cursor:pointer;font-size:20px;line-height:1}
 .qz-steps{display:flex;gap:4px}
 .qz-steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}
@@ -125,7 +125,39 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 .qz-end .row{display:flex;gap:8px;flex-wrap:wrap}
 .qz-end .pill.ghost{background:var(--soft);color:var(--fg)}
 .ep .pill.quiz{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 2px var(--line)}
-.ep .score{font-size:13px;color:var(--muted)}
+.ep .score{font-size:13px;color:var(--muted);margin-top:4px;display:flex;flex-direction:column;gap:4px}
+.ep .score:empty{display:none}
+.mini{height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:flex}
+.mini i{display:block;height:100%}
+.mini .r{background:var(--ok)} .mini .w{background:var(--bad)}
+.qz-bar{display:flex;flex-direction:column;gap:8px;background:var(--soft);border-radius:12px;padding:12px 14px}
+.qz-nums{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:14px;font-variant-numeric:tabular-nums}
+.qz-nums b{font-family:var(--display);font-stretch:112%;font-size:16px}
+.qz-nums .ok{color:var(--ok)} .qz-nums .bad{color:var(--bad)}
+.qz-btns{display:flex;gap:8px;align-items:center}
+.qz-restart{white-space:nowrap;flex:none;appearance:none;border:0;background:var(--soft);color:var(--fg);height:40px;border-radius:999px;padding:0 14px;cursor:pointer;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.qz-restart svg{width:16px;height:16px}
+.qz-hist{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
+.qz-hist div{background:var(--soft);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--muted)}
+.qz-hist b{display:block;font-family:var(--display);font-stretch:112%;font-size:20px;color:var(--fg);font-variant-numeric:tabular-nums}
+
+/* Lernstand */
+.stand{display:flex;flex-direction:column;gap:14px}
+.stand-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--fg);padding-bottom:10px}
+.stand-head h2{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(24px,4vw,32px);margin:0;line-height:1.05}
+.stand-reset{appearance:none;border:0;background:transparent;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:14px;padding:8px 0}
+.stand-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.st{--c:var(--gk);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.st.wk{--c:var(--wk)}
+.st h3{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:20px;margin:0;color:var(--c)}
+.st .big{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}
+.st .big small{font-family:var(--body);font-size:15px;font-weight:400;color:var(--muted);margin-left:6px}
+.st .mini{height:10px;border-radius:5px}
+.st .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.st .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--line);vertical-align:-1px}
+.st .legend .lr::before{background:var(--ok)} .st .legend .lw::before{background:var(--bad)}
+.st .row{display:flex;gap:8px;flex-wrap:wrap}
+.st .pill{background:var(--c);color:var(--surface)}
 
 .foot-note{color:var(--muted);font-size:15px;max-width:46rem;margin:0}
 
@@ -170,6 +202,11 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
   <section class="tiles" id="tiles" aria-label="Podcasts"></section>
 
   <div id="shows" style="display:flex;flex-direction:column;gap:48px"></div>
+
+  <section class="stand" id="stand" aria-labelledby="standH">
+    <div class="stand-head"><h2 id="standH">Dein Quiz-Lernstand</h2><button class="stand-reset" id="standReset" type="button">Fortschritt zurücksetzen</button></div>
+    <div class="stand-grid" id="standGrid"></div>
+  </section>
 
   <p class="foot-note">Die Dateien sind im Format .m4a (nur Ton) und laufen auf jedem Handy und Computer. Die Seite merkt sich auf deinem Gerät, wo du in jeder Folge aufgehört hast. Die Stimmen sind computergeneriert.</p>
 </div>
@@ -221,7 +258,9 @@ const fmt=s=>{s=Math.max(0,Math.round(s||0));const h=Math.floor(s/3600),m=Math.f
 const mins=s=>Math.round(s/60)+" Min.";
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const pos=store.get("podcast-pos")||{};
-const best=store.get("podcast-quiz")||{};
+const qstats=store.get("podcast-quiz-stats")||{};   // pro Quiz: {runs, best:{r,n}, last:{r,n}}
+const qans=store.get("podcast-quiz-answers")||{};    // pro Frage (Fragetext): {n: wie oft beantwortet, ok: letzte Antwort richtig}
+(()=>{const old=store.get("podcast-quiz"); if(old) for(const [k,v] of Object.entries(old)) if(!qstats[k]) qstats[k]={runs:1,best:v,last:v};})();
 function h(tag,attrs={},html){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);if(html!=null)e.innerHTML=html;return e}
 function txt(tag,cls,t){const e=document.createElement(tag);if(cls)e.className=cls;e.textContent=t;return e}
 
@@ -343,17 +382,66 @@ function save(force){
 }
 
 // Quiz
-function paintScore(id){
-  const b=best[id], c=cards[id]; if(!c) return;
-  c.score.textContent = b ? `Quiz: bestes Ergebnis ${b.r} von ${b.n}` : "";
+const ICON_RESTART='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>';
+function pct(a,b){return b?Math.round(a/b*100):0}
+// Stand einer Fragenliste: beantwortet, zuletzt richtig, zuletzt falsch
+function standOf(list){
+  let done=0, ok=0;
+  list.forEach(q=>{const a=qans[q[0]]; if(a){done++; if(a.ok) ok++}});
+  return {total:list.length, done, ok, bad:done-ok};
 }
+function miniBar(st){
+  const b=h("div",{class:"mini",role:"img","aria-label":`${st.ok} richtig, ${st.bad} falsch, ${st.total-st.done} offen`});
+  b.innerHTML=`<i class="r" style="width:${st.ok/st.total*100}%"></i><i class="w" style="width:${st.bad/st.total*100}%"></i>`;
+  return b;
+}
+function paintScore(id){
+  const c=cards[id]; if(!c||!window.QUIZ) return;
+  const s0=qstats[id], st=standOf(window.QUIZ[id]);
+  c.score.replaceChildren();
+  if(!s0 && !st.done) return;
+  const line=s0 ? `Quiz ${s0.runs}× gemacht · bestes Ergebnis ${s0.best.r}/${s0.best.n} · ${pct(st.ok,st.total)} % sicher` : `Quiz: ${pct(st.ok,st.total)} % der Fragen sicher`;
+  c.score.append(txt("span",null,line), miniBar(st));
+}
+function paintStand(){
+  const grid=document.getElementById("standGrid"); if(!grid||!window.QUIZ) return;
+  grid.replaceChildren();
+  PODS.forEach(pod=>{
+    const st=standOf(window.QUIZ[pod.all.id]);
+    const runs=[pod.all,...pod.eps].reduce((a,e)=>a+((qstats[e.id]||{}).runs||0),0);
+    const box=h("article",{class:"st "+pod.cls});
+    box.appendChild(txt("h3",null,pod.name));
+    const big=h("div",{class:"big"}); big.textContent=pct(st.done,st.total)+" %";
+    big.appendChild(txt("small",null,"der Fragen bearbeitet"));
+    const leg=h("div",{class:"legend"});
+    leg.append(txt("span","lr",`${st.ok} richtig`), txt("span","lw",`${st.bad} falsch`), txt("span",null,`${st.total-st.done} offen`), txt("span",null,`${runs}× Quiz gemacht`));
+    const row=h("div",{class:"row"});
+    const go=h("button",{class:"pill",type:"button"},ICON_QUIZ+(st.done?"Weiter üben":"Quiz starten"));
+    go.onclick=()=>openQuiz(pod.all.id);
+    row.appendChild(go);
+    box.append(big,miniBar(st),leg,row); grid.appendChild(box);
+  });
+}
+document.getElementById("standReset").onclick=()=>{
+  if(!confirm("Willst du deinen ganzen Quiz-Fortschritt löschen?")) return;
+  for(const k in qstats) delete qstats[k]; for(const k in qans) delete qans[k];
+  store.set("podcast-quiz-stats",qstats); store.set("podcast-quiz-answers",qans); store.set("podcast-quiz",null);
+  Object.keys(cards).forEach(paintScore); paintStand();
+};
+
 const dlg=document.getElementById("quiz"), qz=document.getElementById("qz");
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 let Q=null;
 function openQuiz(id){
   const ep=byId[id], pool=window.QUIZ&&window.QUIZ[id]; if(!pool) return;
-  const qs=shuffle(pool).slice(0, id.endsWith("komplett")?10:pool.length);
-  Q={id,ep,qs,i:0,res:[]};
+  let qs;
+  if(id.endsWith("komplett")){
+    // Erst offene und falsch beantwortete Fragen, dann der Rest
+    const prio=q=>{const a=qans[q[0]]; return !a?0:(a.ok?2:1)};
+    qs=shuffle(pool).sort((a,b)=>prio(a)-prio(b)).slice(0,10);
+    qs=shuffle(qs);
+  } else qs=shuffle(pool);
+  Q={id,ep,qs,i:0,res:[],answered:false,finished:false};
   dlg.className="quiz "+ep.pod.cls;
   renderQ();
   if(!dlg.open) dlg.showModal();
@@ -361,29 +449,42 @@ function openQuiz(id){
 function head(){
   const top=h("div",{class:"qz-top"});
   const t=txt("small",null,`${Q.ep.pod.name} · ${Q.ep.num}`); t.id="qzTitle";
+  const btns=h("div",{class:"qz-btns"});
+  const re=h("button",{class:"qz-restart",type:"button"},ICON_RESTART+"Neu starten"); re.onclick=()=>openQuiz(Q.id);
   const x=h("button",{class:"qz-x",type:"button","aria-label":"Quiz schließen"},"×"); x.onclick=()=>dlg.close();
-  top.append(t,x);
+  btns.append(re,x); top.append(t,btns);
+  return [top, qbar()];
+}
+function qbar(){
+  const n=Q.qs.length, done=Q.res.length, ok=Q.res.filter(Boolean).length, s0=qstats[Q.id];
+  const wrap=h("div",{class:"qz-bar"});
+  const nums=h("div",{class:"qz-nums"});
+  nums.innerHTML=`<span>Frage <b>${Math.min(done+(Q.answered?0:1),n)}/${n}</b></span><span><b>${pct(done,n)} %</b> geschafft</span><span class="ok"><b>${ok}</b> richtig</span><span class="bad"><b>${done-ok}</b> falsch</span><span>Versuch <b>${(s0?s0.runs:0)+(Q.finished?0:1)}</b></span>`;
   const steps=h("div",{class:"qz-steps","aria-hidden":"true"});
-  Q.qs.forEach((_,k)=>{const i=document.createElement("i");if(k<Q.res.length)i.className=Q.res[k]?"ok":"bad";else if(k===Q.i)i.className="now";steps.appendChild(i)});
-  return [top,steps];
+  Q.qs.forEach((_,k)=>{const i=document.createElement("i");if(k<done)i.className=Q.res[k]?"ok":"bad";else if(k===Q.i)i.className="now";steps.appendChild(i)});
+  wrap.append(nums,steps);
+  return wrap;
 }
 function renderQ(){
   const [q,right,wrong,why]=Q.qs[Q.i];
+  Q.answered=false;
   qz.replaceChildren(...head());
   const h3=txt("h3",null,q); qz.appendChild(h3);
   const opts=h("div",{class:"qz-opts"});
   shuffle([right,...wrong]).forEach(a=>{
     const b=txt("button","qz-opt",a); b.type="button";
     b.onclick=()=>{
-      const ok=a===right; Q.res.push(ok);
+      const ok=a===right; Q.res.push(ok); Q.answered=true;
+      const prev=qans[q]||{n:0}; qans[q]={n:prev.n+1,ok}; store.set("podcast-quiz-answers",qans);
       opts.querySelectorAll("button").forEach(x=>{x.disabled=true; if(x.textContent===right)x.classList.add("right")});
       if(!ok) b.classList.add("wrong");
       const w=h("p",{class:"qz-why",role:"status"}); w.append(txt("b",null,ok?"Richtig!":"Leider falsch."), document.createTextNode(why));
       const last=Q.i===Q.qs.length-1;
       const n=h("button",{class:"pill qz-next",type:"button"},last?"Ergebnis ansehen":"Nächste Frage");
       n.onclick=()=>{ if(last) renderEnd(); else {Q.i++; renderQ()} };
-      qz.querySelector(".qz-steps").replaceWith(head()[1]);
+      qz.querySelector(".qz-bar").replaceWith(qbar());
       qz.append(w,n); n.focus();
+      Object.keys(cards).forEach(paintScore); paintStand();
     };
     opts.appendChild(b);
   });
@@ -392,20 +493,26 @@ function renderQ(){
 }
 function renderEnd(){
   const r=Q.res.filter(Boolean).length, n=Q.qs.length;
-  const prev=best[Q.id]; if(!prev || r/n>prev.r/prev.n){best[Q.id]={r,n};store.set("podcast-quiz",best);paintScore(Q.id)}
-  qz.replaceChildren(...head());
+  const s0=qstats[Q.id]||{runs:0,best:null,last:null};
+  s0.runs++; s0.last={r,n}; if(!s0.best || r/n>s0.best.r/s0.best.n) s0.best={r,n};
+  qstats[Q.id]=s0; store.set("podcast-quiz-stats",qstats); Q.finished=true;
+  Object.keys(cards).forEach(paintScore); paintStand();
+  const [top]=head(); qz.replaceChildren(top, qbar());
   const end=h("div",{class:"qz-end"});
-  const pct=r/n;
-  const msg = pct===1?"Alles richtig. Du bist bereit für die Prüfung!" : pct>=.7?"Stark! Nur noch ein paar Lücken." : pct>=.4?"Guter Anfang. Hör die Folge noch einmal und versuch es dann erneut." : "Hör dir die Folge am besten noch einmal an und starte das Quiz dann neu.";
-  end.append(txt("p","qz-score",`${r}/${n}`), txt("p",null,msg));
+  const p=r/n;
+  const msg = p===1?"Alles richtig. Du bist bereit für die Prüfung!" : p>=.7?"Stark! Nur noch ein paar Lücken." : p>=.4?"Guter Anfang. Hör die Folge noch einmal und versuch es dann erneut." : "Hör dir die Folge am besten noch einmal an und starte das Quiz dann neu.";
+  const hist=h("div",{class:"qz-hist"});
+  hist.innerHTML=`<div><b>${s0.runs}×</b>gemacht</div><div><b>${s0.best.r}/${s0.best.n}</b>bestes Ergebnis</div><div><b>${pct(r,n)} %</b>diesmal richtig</div>`;
+  end.append(txt("p","qz-score",`${r}/${n}`), txt("p",null,msg), hist);
   const row=h("div",{class:"row"});
-  const again=h("button",{class:"pill qz-next",type:"button"},"Nochmal");
+  const again=h("button",{class:"pill qz-next",type:"button"},ICON_RESTART+"Quiz neu starten");
   again.onclick=()=>openQuiz(Q.id);
   const listen=h("button",{class:"pill ghost",type:"button"},ICON_PLAY+"Folge anhören");
   const id=Q.id; listen.onclick=()=>{dlg.close();start(id)};
   row.append(again,listen); end.appendChild(row);
   qz.appendChild(end); again.focus();
 }
+paintStand();
 dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
 
 // Lock screen / headphone controls
