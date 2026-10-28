@@ -42,7 +42,7 @@ window.CARDS = {
     ["Gleichgewichtspreis", "Der Preis, bei dem angebotene und nachgefragte Menge gleich groß sind."],
     ["Inflation", "Das allgemeine Preisniveau steigt, die Kaufkraft des Geldes sinkt. Die EZB strebt etwa 2 % an."],
     ["Bruttoinlandsprodukt (BIP)", "Der Wert aller in einem Jahr im Inland hergestellten Waren und Dienstleistungen."],
-    ["Konjunkturphasen", "Aufschwung, Boom (Hochkonjunktur), Abschwung, Tiefphase (Depression)."],
+    ["Konjunkturphasen", "Aufschwung, Boom (Hochkonjunktur), Rezession (Abschwung), Depression (Tiefphase)."],
     ["Soziale Marktwirtschaft", "Freier Markt mit sozialem Ausgleich durch den Staat. Vater: Ludwig Erhard."],
     ["Bundeskartellamt", "Wacht über den Wettbewerb und verbietet Preisabsprachen (Kartelle)."],
     ["Fixe und variable Kosten", "Fix: unabhängig von der Menge, z. B. Miete. Variabel: steigen mit der Menge, z. B. Material."],

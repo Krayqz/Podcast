@@ -47,10 +47,87 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--fg);outline-offset:3px;border-radius:6px}
 
 .wrap{max-width:1040px;margin:0 auto;
-  padding-block:calc(28px + env(safe-area-inset-top,0px)) 56px;
+  padding-block:28px 56px;
   padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
   display:flex;flex-direction:column;gap:48px}
-body.playing .wrap{padding-bottom:180px}
+body.playing .wrap{padding-bottom:190px}
+body{--c:var(--gk);--soft:var(--gk-soft);--ink:var(--gk-ink)}
+body.s-wk{--c:var(--wk);--soft:var(--wk-soft);--ink:var(--wk-ink)}
+
+/* App-Kopf */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--surface)}
+.app-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
+.app-head .in{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding-block:10px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;min-width:0}
+.brand>span:last-child{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:17px;line-height:1.1;white-space:nowrap}
+.brand small{display:block;font-family:var(--body);font-weight:400;font-size:12px;color:var(--muted)}
+.logo{width:38px;height:38px;border-radius:11px;background:var(--c);color:var(--ink);display:grid;place-items:center;flex:none}
+.logo svg{width:22px;height:22px}
+.seg{display:flex;background:var(--bg);border-radius:999px;padding:4px;gap:2px;flex:none}
+.seg button{appearance:none;border:0;background:transparent;border-radius:999px;padding:8px 14px;min-height:38px;font-weight:700;font-size:15px;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"][data-s="gk"]{background:var(--gk);color:var(--gk-ink)}
+.seg button[aria-pressed="true"][data-s="wk"]{background:var(--wk);color:var(--wk-ink)}
+.tabs{max-width:1040px;margin:0 auto;display:flex;gap:4px;padding-left:max(10px, env(safe-area-inset-left, 0px));padding-right:max(10px, env(safe-area-inset-right, 0px))}
+.tabs a{display:flex;align-items:center;gap:8px;padding:10px 14px 12px;color:var(--muted);text-decoration:none;font-weight:700;font-size:15px;border-bottom:3px solid transparent}
+.tabs a svg{width:20px;height:20px}
+.tabs a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--c)}
+@media (max-width:700px){
+  .tabs{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);max-width:none;gap:0;justify-content:space-around;
+    padding-bottom:env(safe-area-inset-bottom,0px)}
+  .tabs a{flex:1;flex-direction:column;gap:2px;padding:8px 4px 8px;font-size:12px;border-bottom:0;border-top:3px solid transparent;justify-content:center;min-height:58px}
+  .tabs a[aria-current="page"]{border-top-color:var(--c);color:var(--c)}
+  .player{bottom:calc(58px + env(safe-area-inset-bottom,0px))!important;padding-bottom:12px!important}
+  .wrap{padding-bottom:110px}
+  body.playing .wrap{padding-bottom:280px}
+  .brand small{display:none}
+  .brand>span:last-child{font-size:16px}
+}
+@media (max-width:460px){.brand>span:last-child{display:none}}
+
+.view{display:flex;flex-direction:column;gap:36px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--c);padding-bottom:10px}
+.sec-head h2{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(24px,4vw,32px);margin:0;line-height:1.05}
+.sec-head span{color:var(--muted);font-size:15px}
+.view>.sec-head:not(:first-child){margin-top:12px}
+
+/* Start */
+.start-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.start-grid .count{grid-column:auto}
+.resume .row{margin-top:0}
+.resume .ep-name{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:20px;line-height:1.2}
+.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.subj{--c:var(--gk);--ink:var(--gk-ink);--soft:var(--gk-soft);background:var(--c);color:var(--ink);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
+.subj.wk{--c:var(--wk);--ink:var(--wk-ink);--soft:var(--wk-soft)}
+.subj h2{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:28px;margin:0;line-height:1}
+.subj .kick{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.subj .meters{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.subj .meters div{display:flex;flex-direction:column;gap:6px;font-size:13px}
+.subj .meters b{font-family:var(--display);font-stretch:112%;font-size:24px;line-height:1;font-variant-numeric:tabular-nums}
+.subj .meters i{display:block;height:6px;border-radius:3px;background:color-mix(in srgb, var(--ink) 25%, transparent);overflow:hidden}
+.subj .meters i::after{content:"";display:block;height:100%;width:var(--w);background:var(--ink)}
+.subj .row{display:flex;gap:8px;flex-wrap:wrap}
+.subj .pill.main{background:var(--ink);color:var(--c)}
+.subj .pill.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px currentColor}
+.subj .glyph{position:absolute;right:-6px;top:-16px;font-family:var(--display);font-stretch:125%;font-weight:900;font-size:120px;line-height:1;opacity:.12;pointer-events:none}
+
+/* Quiz-Liste */
+.qlist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:10px}
+.qlist li{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;min-width:0}
+.qlist .t{min-width:0}
+.qlist .t small{display:block;color:var(--c);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.qlist .t b{display:block;font-family:var(--display);font-stretch:112%;font-size:17px;line-height:1.2}
+.qlist .t span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.qlist .mini{grid-column:1/-1}
+.qlist .pill{background:var(--c);color:var(--ink);min-height:44px;padding:9px 14px;font-size:15px}
+
+/* Verlauf */
+.hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.hist li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:14px;font-variant-numeric:tabular-nums}
+.hist .n{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:30px;line-height:1;width:34px;text-align:center}
+.hist .d{color:var(--muted);font-size:14px}
+.hist .empty{color:var(--muted)}
+
 
 /* Header */
 .top{display:flex;flex-direction:column;gap:10px;max-width:46rem}
@@ -76,7 +153,7 @@ h1{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:clamp(
 .tile :focus-visible{outline-color:var(--ink)}
 
 /* Episode sections */
-.show{--c:var(--gk);--soft:var(--gk-soft);--ink:var(--gk-ink);display:flex;flex-direction:column;gap:16px;scroll-margin-top:24px}
+.show{scroll-margin-top:140px;--c:var(--gk);--soft:var(--gk-soft);--ink:var(--gk-ink);display:flex;flex-direction:column;gap:16px;scroll-margin-top:24px}
 .show.wk{--c:var(--wk);--soft:var(--wk-soft);--ink:var(--wk-ink)}
 .show-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--c);padding-bottom:10px}
 .show-head h2{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(24px,4vw,32px);margin:0;line-height:1.05}
@@ -157,6 +234,7 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 .tool .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
 .tool .pill{min-height:44px;padding:9px 14px;font-size:15px}
 .tool .pill.gk{background:var(--gk);color:var(--gk-ink)} .tool .pill.wk{background:var(--wk);color:var(--wk-ink)}
+.tool .pill.cur{background:var(--c);color:var(--ink)}
 .tool .pill.both{background:var(--fg);color:var(--bg)}
 .tool .pill:disabled{opacity:.45;cursor:default}
 .count{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;align-items:start}
@@ -210,6 +288,7 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 
 /* Lernstand */
 .stand{display:flex;flex-direction:column;gap:14px}
+.stand-head{border-bottom-color:var(--c)!important}
 .stand-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--fg);padding-bottom:10px}
 .stand-head h2{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(24px,4vw,32px);margin:0;line-height:1.05}
 .stand-reset{appearance:none;border:0;background:transparent;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:14px;padding:8px 0}
@@ -259,18 +338,24 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <div class="kicker">Berufsschule Baden-Württemberg · Prüfungsvorbereitung</div>
-    <h1>Prüfungs&shy;stoff zum Hören</h1>
-    <p>Lena und Max erklären dir Gemeinschaftskunde und Wirtschaftskompetenz. Hör im Bus, beim Sport oder vor der Prüfung noch einmal rein.</p>
-  </header>
+<header class="app-head">
+  <div class="in">
+    <a class="brand" href="#start"><span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="5" height="7" rx="2" fill="currentColor"/><rect x="16" y="14" width="5" height="7" rx="2" fill="currentColor"/></svg></span><span>Prüfungs-Podcasts<small>Berufsschule BW</small></span></a>
+    <div class="seg" id="seg" role="group" aria-label="Fach wählen"><button type="button" data-s="gk">GK</button><button type="button" data-s="wk">Wirtschaft</button></div>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="Bereiche">
+    <a href="#start" data-v="start"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg><span>Start</span></a><a href="#hoeren" data-v="hoeren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/></svg><span>Hören</span></a><a href="#lernen" data-v="lernen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 2h12a2 2 0 0 1 2 2v12"/></svg><span>Lernen</span></a><a href="#fortschritt" data-v="fortschritt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20H2"/></svg><span>Fortschritt</span></a>
+  </nav>
+</header>
 
-  <section class="tiles" id="tiles" aria-label="Podcasts"></section>
-
-  <section class="learn" id="lernen" aria-labelledby="learnH">
-    <div class="learn-head"><h2 id="learnH">Lernen</h2><span>Countdown, Fehler-Training, Karteikarten und Probeprüfung</span></div>
-    <div class="tools" id="tools">
+<main class="wrap">
+  <section class="view" data-view="start" aria-labelledby="startH">
+    <header class="top">
+      <div class="kicker">Prüfungsvorbereitung · Gemeinschaftskunde und Wirtschaftskompetenz</div>
+      <h1 id="startH">Prüfungs&shy;stoff zum Hören</h1>
+      <p>Lena und Max erklären dir den Stoff. Hör im Bus oder beim Sport, übe mit Quiz und Karteikarten und mach vor der Prüfung eine Probeprüfung.</p>
+    </header>
+    <div class="start-grid">
       <article class="tool count" id="countdown">
         <div class="dates">
           <h3>Countdown bis zur Prüfung</h3>
@@ -280,6 +365,19 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
         <div class="days" id="days"></div>
         <div class="today" id="today"></div>
       </article>
+      <article class="tool resume" id="resume" hidden></article>
+    </div>
+    <div class="subjects" id="subjects"></div>
+  </section>
+
+  <section class="view" data-view="hoeren" aria-label="Hören">
+    <section class="tiles" id="tiles" aria-label="Podcast"></section>
+    <div id="shows"></div>
+  </section>
+
+  <section class="view" data-view="lernen" aria-labelledby="learnH">
+    <div class="sec-head"><h2 id="learnH">Lernen</h2><span id="learnSub"></span></div>
+    <div class="tools" id="tools">
       <article class="tool">
         <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
         <h3>Fehler-Training</h3>
@@ -302,17 +400,22 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
         <div class="row" id="exRow"></div>
       </article>
     </div>
+    <div class="sec-head"><h2>Quiz zu jeder Folge</h2><span>5 bis 10 Fragen mit Erklärung</span></div>
+    <ul class="qlist" id="qlist"></ul>
   </section>
 
-  <div id="shows" style="display:flex;flex-direction:column;gap:48px"></div>
-
+  <section class="view" data-view="fortschritt" aria-labelledby="standH">
   <section class="stand" id="stand" aria-labelledby="standH">
-    <div class="stand-head"><h2 id="standH">Dein Quiz-Lernstand</h2><button class="stand-reset" id="standReset" type="button">Fortschritt zurücksetzen</button></div>
+    <div class="stand-head"><h2 id="standH">Dein Lernstand</h2><button class="stand-reset" id="standReset" type="button">Fortschritt zurücksetzen</button></div>
     <div class="stand-grid" id="standGrid"></div>
+  </section>
+    <div class="sec-head"><h2>Probeprüfungen</h2><span>Deine letzten Ergebnisse</span></div>
+    <ul class="hist" id="hist"></ul>
   </section>
 
   <p class="foot-note">Die Dateien sind im Format .m4a (nur Ton) und laufen auf jedem Handy und Computer. Die Seite merkt sich auf deinem Gerät, wo du in jeder Folge aufgehört hast. Die Stimmen sind computergeneriert.</p>
-</div>
+
+</main>
 
 <dialog class="quiz" id="quiz" aria-labelledby="qzTitle"><div class="qz" id="qz"></div></dialog>
 
@@ -378,7 +481,7 @@ PODS.forEach(pod=>{
   const total=pod.eps.reduce((a,e)=>a+e.sec,0);
 
   // Tile
-  const t=h("article",{class:"tile "+pod.cls});
+  const t=h("article",{class:"tile "+pod.cls,"data-s-item":pod.cls});
   t.appendChild(txt("div","glyph",pod.glyph)).setAttribute("aria-hidden","true");
   const head=document.createElement("div");
   head.append(txt("div","subj",pod.subject), txt("h2",null,pod.name));
@@ -390,12 +493,13 @@ PODS.forEach(pod=>{
   play.onclick=()=>start(pod.all.id);
   const qb=h("button",{class:"pill ghost",type:"button"},ICON_QUIZ+"Quiz starten");
   qb.onclick=()=>openQuiz(pod.all.id);
-  const go=h("a",{class:"pill ghost",href:"#"+pod.id},"Folgen ansehen");
+  const go=h("button",{class:"pill ghost",type:"button"},"Folgen ansehen");
+  go.onclick=()=>document.getElementById(pod.id).scrollIntoView({behavior:"smooth",block:"start"});
   row.append(play,qb,go);
   t.append(head,facts,row); tiles.appendChild(t);
 
   // Episode list
-  const sec=h("section",{class:"show "+pod.cls,id:pod.id,"aria-labelledby":pod.id+"-h"});
+  const sec=h("section",{class:"show "+pod.cls,id:pod.id,"aria-labelledby":pod.id+"-h","data-s-item":pod.cls});
   const sh=h("div",{class:"show-head"});
   const h2=txt("h2",null,pod.name); h2.id=pod.id+"-h";
   sh.append(h2, txt("span",null,`${pod.subject} · ${pod.eps.length} Folgen · ${mins(total)}`));
@@ -460,7 +564,7 @@ function start(id, jump){
   if(currentId===id && jump==null){ audio.paused?audio.play().catch(()=>{}):audio.pause(); return }
   if(currentId===id){ audio.currentTime=jump; audio.play().catch(()=>{}); return }
   if(jump!=null) pos[id]=jump;
-  currentId=id;
+  currentId=id; store.set("podcast-last",id);
   playerEl.hidden=false; document.body.classList.add("playing");
   playerEl.style.setProperty("--pc", getComputedStyle(document.documentElement).getPropertyValue(ep.pod.cls==="gk"?"--gk":"--wk"));
   document.getElementById("pShow").textContent=ep.pod.name;
@@ -498,6 +602,7 @@ function save(force){
   if(!currentId) return; const now=Date.now();
   if(!force && now-lastSave<4000) return; lastSave=now;
   pos[currentId]=Math.floor(audio.currentTime); store.set("podcast-pos",pos); paintCard(currentId);
+  if(force) renderResume();
   if(!audio.paused) setLabel(currentId,"Pause");
 }
 
@@ -781,21 +886,88 @@ function renderCard(){
 
 // ---------- Werkzeug-Karten ----------
 function refreshTools(){
-  const fg=wrongOf("gk").length, fw=wrongOf("wk").length;
-  document.getElementById("fixInfo").textContent = fg+fw ? `${fg} Fehler in GK · ${fw} Fehler in Wirtschaft` : "Noch keine Fehler gesammelt. Mach zuerst ein Quiz.";
-  const fr=document.getElementById("fixRow"); fr.replaceChildren();
-  const b1=pillBtn("gk","GK üben",()=>openFix("gk")); b1.disabled=!fg;
-  const b2=pillBtn("wk","Wirtschaft üben",()=>openFix("wk")); b2.disabled=!fw;
-  fr.append(b1,b2);
-  const kn=k=>(window.CARDS[k]||[]).filter(c=>known[c[0]]).length, tot=k=>(window.CARDS[k]||[]).length;
-  document.getElementById("fcInfo").textContent=`GK: ${kn("gk")} von ${tot("gk")} gelernt · Wirtschaft: ${kn("wk")} von ${tot("wk")}`;
-  const cr=document.getElementById("fcRow"); cr.replaceChildren();
-  cr.append(pillBtn("gk","GK-Karten",()=>openCards("gk")), pillBtn("wk","Wirtschaft-Karten",()=>openCards("wk")));
-  const last=exams.slice(0,3).map(e=>`${e.s==="gk"?"GK":e.s==="wk"?"Wirtschaft":"Beide"}: Note ${e.note} (${e.r}/${e.n})`).join(" · ");
-  document.getElementById("exInfo").textContent = last ? "Zuletzt: "+last : "";
-  const er=document.getElementById("exRow"); er.replaceChildren();
-  er.append(pillBtn("gk","GK",()=>openExam("gk")), pillBtn("wk","Wirtschaft",()=>openExam("wk")), pillBtn("both","Beide gemischt",()=>openExam("both")));
+  const name=subj==="gk"?"GK":"Wirtschaft";
+  document.getElementById("learnSub").textContent = subj==="gk" ? "Gemeinschaftskunde · GK auf die Ohren" : "Wirtschaftskompetenz · Wirtschaft kompakt";
+  const f=wrongOf(subj).length;
+  document.getElementById("fixInfo").textContent = f ? `${f} ${f===1?"Frage":"Fragen"} in ${name} noch nicht sicher` : `Keine offenen Fehler in ${name}. Mach zuerst ein Quiz.`;
+  const fb=pillBtn("cur","Fehler üben",()=>openFix(subj)); fb.disabled=!f;
+  document.getElementById("fixRow").replaceChildren(fb);
+  const cs=window.CARDS[subj]||[], kn=cs.filter(c=>known[c[0]]).length;
+  document.getElementById("fcInfo").textContent=`${kn} von ${cs.length} Karten gelernt`;
+  document.getElementById("fcRow").replaceChildren(pillBtn("cur",kn===cs.length?"Alle wiederholen":"Karten lernen",()=>openCards(subj)));
+  const last=exams.filter(e=>e.s===subj)[0];
+  document.getElementById("exInfo").textContent = last ? `Zuletzt in ${name}: Note ${last.note} (${last.r}/${last.n})` : "";
+  document.getElementById("exRow").replaceChildren(pillBtn("cur",`${name}-Prüfung starten`,()=>openExam(subj)), pillBtn("both","Beide Fächer",()=>openExam("both")));
+  renderQuizList(); renderHist(); renderSubjects(); renderResume();
 }
+function renderQuizList(){
+  const ul=document.getElementById("qlist"); ul.replaceChildren();
+  const pod=podOf(subj);
+  [...pod.eps,pod.all].forEach(ep=>{
+    const st=standOf(window.QUIZ[ep.id]), s0=qstats[ep.id];
+    const li=document.createElement("li"), t=h("div",{class:"t"});
+    t.append(txt("small",null,ep.num), txt("b",null,ep.title),
+      txt("span",null, s0 ? `${s0.runs}× gemacht · bestes ${s0.best.r}/${s0.best.n} · ${pct(st.ok,st.total)} % sicher` : `${ep.id.endsWith("komplett")?"10 gemischte":window.QUIZ[ep.id].length} Fragen · noch nicht gemacht`));
+    const b=h("button",{class:"pill",type:"button"},ICON_QUIZ+(s0?"Nochmal":"Starten")); b.onclick=()=>openQuiz(ep.id);
+    li.append(t,b,miniBar(st)); ul.appendChild(li);
+  });
+}
+function renderHist(){
+  const ul=document.getElementById("hist"); ul.replaceChildren();
+  if(!exams.length){ul.appendChild(txt("li","empty","Noch keine Probeprüfung gemacht. Du findest sie unter „Lernen“."));return}
+  exams.slice(0,10).forEach(e=>{
+    const li=document.createElement("li");
+    const n=txt("span","n",String(e.note)); n.style.color=e.s==="wk"?"var(--wk)":e.s==="gk"?"var(--gk)":"var(--fg)";
+    const d=document.createElement("div");
+    d.append(txt("b",null,`${SUBJ[e.s]} · ${e.r} von ${e.n} richtig`), txt("div","d",new Date(e.d+"T12:00:00").toLocaleDateString("de-DE",{day:"numeric",month:"long",year:"numeric"})));
+    li.append(n,d); ul.appendChild(li);
+  });
+}
+function renderSubjects(){
+  const box=document.getElementById("subjects"); box.replaceChildren();
+  PODS.forEach(pod=>{
+    const k=pod.cls, heard=pod.eps.filter(e=>done[e.id]).length;
+    const st=standOf(window.QUIZ[pod.all.id]), cs=window.CARDS[k]||[], kn=cs.filter(c=>known[c[0]]).length;
+    const a=h("article",{class:"subj "+k});
+    a.appendChild(txt("div","glyph",pod.glyph)).setAttribute("aria-hidden","true");
+    const hd=document.createElement("div"); hd.append(txt("div","kick",pod.subject), txt("h2",null,pod.name));
+    const m=h("div",{class:"meters"});
+    [[`${heard}/${pod.eps.length}`,"Folgen gehört",heard/pod.eps.length],[`${pct(st.ok,st.total)} %`,"Quiz sicher",st.ok/st.total],[`${kn}/${cs.length}`,"Karten gelernt",kn/cs.length]].forEach(([v,l,w])=>{
+      const d=document.createElement("div"); const i=document.createElement("i"); i.style.setProperty("--w",(w*100)+"%");
+      d.append(txt("b",null,v), i, txt("span",null,l)); m.appendChild(d)});
+    const row=h("div",{class:"row"});
+    row.append(pillBtn("main",ICON_PLAY+"Anhören",()=>{setSubj(k);location.hash="#hoeren"}), pillBtn("ghost","Lernen",()=>{setSubj(k);location.hash="#lernen"}));
+    a.append(hd,m,row); box.appendChild(a);
+  });
+}
+function renderResume(){
+  const box=document.getElementById("resume"), id=store.get("podcast-last"), ep=id&&byId[id];
+  const at=ep?pos[id]||0:0;
+  if(!ep || at<=5 || ep.sec-at<=5){box.hidden=true;return}
+  box.hidden=false;
+  box.replaceChildren(txt("h3",null,"Weiterhören"), txt("div","ep-name",`${ep.pod.name} · ${ep.num}: ${ep.title}`),
+    txt("p",null,`Du warst bei ${fmt(at)}, noch ${fmt(ep.sec-at)} übrig.`));
+  const row=h("div",{class:"row"}); row.appendChild(pillBtn("cur",ICON_PLAY+"Weiterhören",()=>start(id))); box.appendChild(row);
+}
+
+// ---------- Fach und Bereiche ----------
+let subj=store.get("podcast-subj")==="wk"?"wk":"gk";
+function setSubj(k){
+  subj=k; store.set("podcast-subj",k);
+  document.body.classList.toggle("s-wk",k==="wk");
+  document.querySelectorAll("#seg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.s===k)));
+  document.querySelectorAll("[data-s-item]").forEach(el=>el.hidden=el.dataset.sItem!==k);
+  refreshTools();
+}
+document.querySelectorAll("#seg button").forEach(b=>b.onclick=()=>setSubj(b.dataset.s));
+const VIEWS=["start","hoeren","lernen","fortschritt"];
+function route(){
+  const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"start";
+  document.querySelectorAll(".view").forEach(el=>el.hidden=el.dataset.view!==v);
+  document.querySelectorAll("#tabs a").forEach(a=>a.dataset.v===v?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current"));
+  window.scrollTo(0,0);
+}
+addEventListener("hashchange",route);
 
 // ---------- Countdown ----------
 const dates=store.get("podcast-dates")||{};
@@ -830,7 +1002,7 @@ function paintToday(){
   if(!tip){const k=order[0];tip={text:"Du hast alles einmal geschafft. Zeit für eine Probeprüfung.",btn:"Probeprüfung",fn:()=>openExam(k)}}
   document.getElementById("today").replaceChildren(txt("small",null,"Heute dran"), txt("b",null,tip.text), pillBtn("",tip.btn,tip.fn));
 }
-refreshTools(); paintToday();
+setSubj(subj); paintToday(); route();
 dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
 
 // Lock screen / headphone controls

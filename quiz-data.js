@@ -68,7 +68,7 @@ window.QUIZ = {
     ["Was bedeutet Inflation?", "Das allgemeine Preisniveau steigt und die Kaufkraft des Geldes sinkt.", ["Die Preise sinken dauerhaft.", "Die Löhne steigen schneller als die Preise.", "Der Euro wird abgeschafft."], "Für dasselbe Geld bekommt man weniger Waren."],
     ["Welche Inflationsrate strebt die Europäische Zentralbank mittelfristig an?", "2 Prozent", ["0 Prozent", "5 Prozent", "10 Prozent"], "Leicht steigende Preise gelten als gut für eine stabile Wirtschaft."],
     ["Was misst das Bruttoinlandsprodukt (BIP)?", "Den Wert aller in einem Jahr im Inland hergestellten Waren und Dienstleistungen", ["Das Vermögen aller Bürger", "Die Schulden des Staates", "Die Summe aller Steuern"], "Das BIP ist das wichtigste Maß für die Wirtschaftsleistung eines Landes."],
-    ["Welche Konjunkturphase folgt auf den Boom (Hochkonjunktur)?", "Abschwung", ["Aufschwung", "Erholung", "Expansion"], "Die Reihenfolge ist Aufschwung, Boom, Abschwung, Tiefphase."],
+    ["Welche Konjunkturphase folgt auf den Boom (Hochkonjunktur)?", "Rezession (Abschwung)", ["Aufschwung", "Depression", "Expansion"], "Die vier Phasen sind immer Aufschwung, Boom, Rezession (Abschwung) und Depression (Tiefphase)."],
     ["Welche Behörde wacht in Deutschland über den Wettbewerb und verhindert Kartelle?", "Das Bundeskartellamt", ["Die Bundesbank", "Das Finanzamt", "Die Verbraucherzentrale"], "Preisabsprachen zwischen Firmen sind verboten."],
     ["Wer gilt als Vater der Sozialen Marktwirtschaft in Deutschland?", "Ludwig Erhard", ["Konrad Adenauer", "Karl Marx", "Helmut Kohl"], "Erhard war Wirtschaftsminister und später Bundeskanzler."]
   ],
