@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Prüfungs-Podcasts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0}
+[hidden]{display:none!important}
+:root{padding-bottom:env(safe-area-inset-bottom,0px)}
+/* Layout: one column. Shared "now playing" card on top, then one block per podcast with its episodes as a track list. GK = blue, WKO = green, as on the two single pages */
+:root{
+  --bg:#f3f4f6; --surface:#ffffff; --fg:#181c22; --muted:#5b6370; --line:#dadee5;
+  --gk:#2d5bd1; --gk-chip:#e4eaf8; --wk:#1f7a4d; --wk-chip:#e3efe7; --on-accent:#ffffff;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111419; --surface:#1a1e26; --fg:#e8ebf0; --muted:#9ba3b0; --line:#2b313c;
+  --gk:#7ea2ff; --gk-chip:#1f2a42; --wk:#4cc38a; --wk-chip:#1f3328; --on-accent:#0c1210; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111419; --surface:#1a1e26; --fg:#e8ebf0; --muted:#9ba3b0; --line:#2b313c;
+  --gk:#7ea2ff; --gk-chip:#1f2a42; --wk:#4cc38a; --wk-chip:#1f3328; --on-accent:#0c1210; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding-block:28px 48px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  display:flex;flex-direction:column;gap:26px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,8vw,44px);line-height:1.05;margin:4px 0 6px;text-wrap:balance}
+.lede{color:var(--muted);margin:0}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.jump a{text-decoration:none;font-weight:600;font-size:15px;padding:8px 14px;border-radius:999px}
+.jump a.gk{background:var(--gk-chip);color:var(--gk)}
+.jump a.wk{background:var(--wk-chip);color:var(--wk)}
+.now{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -4px 16px rgb(0 0 0 / .08);
+  padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  display:flex;flex-direction:column;gap:4px;--accent:var(--gk)}
+.now > *{width:100%;max-width:680px;margin-inline:auto}
+body.playing .wrap{padding-bottom:150px}
+.now.wk{--accent:var(--wk)}
+.now h2{font-family:var(--display);font-weight:600;font-size:16px;margin:0;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status:empty{display:none}
+.now .show{font-size:13px;color:var(--muted);margin:0}
+audio{width:100%}
+.status{font-size:14px;color:var(--muted);min-height:1.2em;margin:0}
+section.pod{display:flex;flex-direction:column;gap:12px;scroll-margin-top:200px}
+section.pod.gk{--accent:var(--gk);--chip:var(--gk-chip)}
+section.pod.wk{--accent:var(--wk);--chip:var(--wk-chip)}
+.pod h2{font-family:var(--display);font-weight:800;font-size:28px;margin:0;color:var(--accent);line-height:1.1}
+.pod p{margin:0;color:var(--muted)}
+.btn{appearance:none;border:0;border-radius:10px;padding:10px 14px;font:600 15px var(--body);cursor:pointer;
+  background:var(--chip);color:var(--fg);min-height:44px}
+a.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.solid{background:var(--accent);color:var(--on-accent)}
+.btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn[disabled]{opacity:.6;cursor:default}
+ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+li{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+li .t{min-width:0}
+li .t b{display:block;font-family:var(--display);font-weight:600;font-size:17px}
+li .t span{color:var(--muted);font-size:14px}
+li .act{display:flex;gap:8px}
+li.on .t b{color:var(--accent)}
+li.full{background:var(--chip);border-radius:12px;padding:14px 12px;border-bottom:0;margin-block:10px 4px}
+li.full .btn.dl{background:var(--surface)}
+li.on .t b::before{content:"▶ ";font-size:13px}
+@media (max-width:460px){li{grid-template-columns:1fr} li .act .btn{flex:1}}
+.dur{font-variant-numeric:tabular-nums}
+.note{font-size:14px;color:var(--muted)}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Prüfungs-Podcasts · Berufsschule BW</div>
+    <h1>Prüfungs-Podcasts</h1>
+    <p class="lede">Lena und Max erklären den Prüfungsstoff in Gemeinschaftskunde und Wirtschaftskompetenz. Zum Anhören im Browser oder zum Herunterladen aufs Handy.</p>
+    <nav class="jump" aria-label="Podcasts">
+      <a class="gk" href="#gk">GK auf die Ohren</a>
+      <a class="wk" href="#wko">Wirtschaft kompakt</a>
+    </nav>
+  </header>
+
+  <section class="now" id="now" aria-label="Player" hidden>
+    <p class="show" id="nowShow">GK auf die Ohren</p>
+    <h2 id="nowTitle">Komplette Folge GK</h2>
+    <audio id="player" controls preload="none"></audio>
+    <p class="status" id="status" role="status"></p>
+  </section>
+
+  <section class="pod gk" id="gk" aria-labelledby="gkH"></section>
+  <section class="pod wk" id="wko" aria-labelledby="wkoH"></section>
+
+  <p class="note">Die Dateien werden als .mp4 gespeichert (nur Ton). Sie laufen in jeder Musik- oder Video-App auf dem Handy. Die Stimmen sind computergeneriert.</p>
+</div>
+
+<script>
+const PODS = [
+  {id:"gk", cls:"gk", name:"GK auf die Ohren", tag:"Gemeinschaftskunde BW",
+   lede:"Alle neun Module deines Lernzettels, schnell und verständlich. Plus Bonus zu Operatoren.",
+   all:{title:"Komplette Folge GK", sub:"Alle Folgen am Stück", dur:"39 Min.", src:"audio/GK-Komplett.mp4", file:"GK-auf-die-Ohren-komplett.mp4"},
+   eps:[
+    {title:"Folge 1: Schuljahr 1", sub:"Rollen, Ausbildung, Familie, Demografie, Migration, Sozialversicherungen, Medien", dur:"11:39", src:"audio/GK-Folge1_Schuljahr1.mp4", file:"GK-auf-die-Ohren-Folge1.mp4"},
+    {title:"Folge 2: Schuljahr 2", sub:"Partizipation, Gesetzgebung, Wahlen, Weimar bis Einheit, Extremismus, Grundrechte", dur:"13:49", src:"audio/GK-Folge2_Schuljahr2.mp4", file:"GK-auf-die-Ohren-Folge2.mp4"},
+    {title:"Folge 3: Schuljahr 3", sub:"EU, Globalisierung, Nachhaltigkeit, Frieden, Entwicklungszusammenarbeit", dur:"12:05", src:"audio/GK-Folge3_Schuljahr3.mp4", file:"GK-auf-die-Ohren-Folge3.mp4"},
+    {title:"Bonus: Operatoren", sub:"Anforderungsbereiche und Urteilsaufgaben", dur:"1:42", src:"audio/GK-Bonus_Operatoren.mp4", file:"GK-auf-die-Ohren-Bonus-Operatoren.mp4"},
+   ]},
+  {id:"wko", cls:"wk", name:"Wirtschaft kompakt", tag:"Wirtschaftskompetenz BW",
+   lede:"Alle vier Kompetenzbereiche, schnell und verständlich. Zahlen mit Stand 2026.",
+   all:{title:"Komplette Folge Wirtschaft kompakt", sub:"Alle vier Teile am Stück", dur:"32 Min.", src:"audio/WiKo-Podcast.mp4", file:"Wirtschaft-kompakt-komplett.mp4"},
+   eps:[
+    {title:"Teil 1: Rolle des Mitarbeiters", sub:"Ausbildung, Arbeitsvertrag, Kündigung, Tarif, Sozialversicherung, Lohn, Steuern", dur:"14:07", src:"audio/WiKo-Podcast-Teil1.mp4", file:"Wirtschaft-kompakt-Teil1.mp4"},
+    {title:"Teil 2: Konsument und Recht", sub:"Geschäftsfähigkeit, Kaufvertrag, Verzug, Verjährung, Widerruf, Zahlen, Sparen, Kredite", dur:"9:02", src:"audio/WiKo-Podcast-Teil2.mp4", file:"Wirtschaft-kompakt-Teil2.mp4"},
+    {title:"Teil 3: Soziale Marktwirtschaft", sub:"Markt und Preis, Wettbewerb, Inflation, BIP, Konjunktur", dur:"4:56", src:"audio/WiKo-Podcast-Teil3.mp4", file:"Wirtschaft-kompakt-Teil3.mp4"},
+    {title:"Teil 4: Selbstständigkeit", sub:"Gründung, Rechtsformen, Finanzierung, Kosten", dur:"3:39", src:"audio/WiKo-Podcast-Teil4.mp4", file:"Wirtschaft-kompakt-Teil4.mp4"},
+   ]},
+];
+
+const player=document.getElementById("player"), now=document.getElementById("now");
+const nowTitle=document.getElementById("nowTitle"), nowShow=document.getElementById("nowShow"), status=document.getElementById("status");
+const rows=[];
+
+function el(tag, cls, text){const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e}
+
+PODS.forEach(pod=>{
+  const sec=document.getElementById(pod.id);
+  sec.appendChild(el("div","eyebrow",pod.tag));
+  const h=el("h2",null,pod.name); h.id=pod.id+"H"; sec.appendChild(h);
+  sec.appendChild(el("p",null,pod.lede));
+  const ol=el("ol");
+  [pod.all, ...pod.eps].forEach(ep=>{
+    const li=el("li"), t=el("div","t");
+    t.appendChild(el("b",null,ep.title));
+    const s=el("span",null,ep.sub+" · "); t.appendChild(s); t.appendChild(el("span","dur",ep.dur));
+    const act=el("div","act");
+    const play=el("button","btn solid","Abspielen"); play.type="button";
+    const dl=el("a","btn dl","Herunterladen"); dl.href=ep.src; dl.setAttribute("download",ep.file);
+    play.onclick=()=>{select(pod,ep,li); player.play().catch(()=>{})};
+    act.append(play,dl); li.append(t,act); ol.appendChild(li);
+    if(ep===pod.all) li.classList.add("full");
+    rows.push({ep,li});
+  });
+  sec.appendChild(ol);
+});
+
+function select(pod,ep,li){
+  now.hidden=false; document.body.classList.add("playing");
+  player.src=ep.src; nowTitle.textContent=ep.title; nowShow.textContent=pod.name;
+  now.classList.toggle("wk",pod.cls==="wk");
+  rows.forEach(r=>r.li.classList.toggle("on",r.li===li));
+}
+
+</script>
+</body>
+</html>
