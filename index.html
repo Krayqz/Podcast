@@ -141,6 +141,73 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 .qz-hist div{background:var(--soft);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--muted)}
 .qz-hist b{display:block;font-family:var(--display);font-stretch:112%;font-size:20px;color:var(--fg);font-variant-numeric:tabular-nums}
 
+/* Lernzentrale */
+.learn{display:flex;flex-direction:column;gap:16px}
+.learn-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--fg);padding-bottom:10px}
+.learn-head h2{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:clamp(24px,4vw,32px);margin:0;line-height:1.05}
+.learn-head span{color:var(--muted);font-size:15px}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.tool .ic{width:40px;height:40px;border-radius:12px;background:var(--fg);color:var(--bg);display:grid;place-items:center}
+.tool .ic svg{width:22px;height:22px}
+.tool h3{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:20px;margin:0;line-height:1.15}
+.tool p{margin:0;color:var(--muted);font-size:15px}
+.tool .info{font-size:14px;color:var(--fg);font-variant-numeric:tabular-nums}
+.tool .info:empty{display:none}
+.tool .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.tool .pill{min-height:44px;padding:9px 14px;font-size:15px}
+.tool .pill.gk{background:var(--gk);color:var(--gk-ink)} .tool .pill.wk{background:var(--wk);color:var(--wk-ink)}
+.tool .pill.both{background:var(--fg);color:var(--bg)}
+.tool .pill:disabled{opacity:.45;cursor:default}
+.count{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;align-items:start}
+.count .dates{display:flex;flex-direction:column;gap:10px}
+.count label{display:flex;flex-direction:column;gap:4px;font-size:14px;font-weight:700}
+.count input[type=date]{font:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);min-height:44px;max-width:100%}
+.days{display:flex;flex-direction:column;gap:6px}
+.days .d{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.days .d b{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.days .d.gk b{color:var(--gk)} .days .d.wk b{color:var(--wk)}
+.days .d span{color:var(--muted);font-size:15px}
+.today{background:var(--bg);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.today small{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.today b{font-family:var(--display);font-stretch:112%;font-size:18px;line-height:1.2}
+.today .pill{align-self:flex-start;background:var(--fg);color:var(--bg)}
+
+/* Kapitel-Chips */
+.chips button{appearance:none;border:0;background:var(--soft);color:var(--fg);font-size:14px;line-height:1.3;padding:4px 10px 4px 8px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-variant-numeric:tabular-nums}
+.chips button:hover{box-shadow:inset 0 0 0 2px var(--c)}
+.chips button small{color:var(--muted);font-size:12px}
+.chips li:has(button){background:none;padding:0}
+.ep .done{color:var(--ok);font-weight:700}
+
+/* Prüfung + Karteikarten im Dialog */
+.qz-timer{font-family:var(--display);font-stretch:112%;font-weight:700;font-variant-numeric:tabular-nums}
+.qz-timer.low{color:var(--bad)}
+.qz-opt.picked{border-color:var(--c);background:var(--soft)}
+.note{display:flex;align-items:center;gap:16px}
+.note .n{font-family:var(--display);font-stretch:125%;font-weight:900;font-size:84px;line-height:1;color:var(--c)}
+.note div{display:flex;flex-direction:column}
+.note div b{font-family:var(--display);font-stretch:112%;font-size:22px}
+.note div span{color:var(--muted);font-size:15px}
+.review{display:flex;flex-direction:column;gap:8px;width:100%;margin:0;padding:0;list-style:none}
+.review li{border-left:4px solid var(--bad);background:var(--bad-soft);border-radius:8px;padding:10px 12px;font-size:15px}
+.review li b{display:block;margin-bottom:4px}
+.review li span{display:block}
+.fc{perspective:1200px;width:100%}
+.fc-card{appearance:none;border:0;padding:0;background:none;width:100%;min-height:220px;cursor:pointer;position:relative;display:block;color:var(--fg);font:inherit}
+.fc-in{position:absolute;inset:0;transform-style:preserve-3d}
+.fc-card.flip .fc-in{transform:rotateY(180deg)}
+.fc-side{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;padding:20px;text-align:center}
+.fc-front{background:var(--c);color:var(--ink)}
+.fc-front b{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:clamp(22px,5vw,28px);line-height:1.15;text-wrap:balance}
+.fc-front small{opacity:.8;font-size:14px}
+.fc-back{background:var(--soft);transform:rotateY(180deg);font-size:18px;line-height:1.45}
+.fc-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fc-acts .pill{justify-content:center}
+.fc-acts .again{background:var(--bad-soft);color:var(--fg);box-shadow:inset 0 0 0 2px var(--bad)}
+.fc-acts .know{background:var(--ok-soft);color:var(--fg);box-shadow:inset 0 0 0 2px var(--ok)}
+@media (prefers-reduced-motion:no-preference){.fc-in{transition:transform .45s cubic-bezier(.2,.7,.2,1)}}
+
 /* Lernstand */
 .stand{display:flex;flex-direction:column;gap:14px}
 .stand-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--fg);padding-bottom:10px}
@@ -201,6 +268,42 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 
   <section class="tiles" id="tiles" aria-label="Podcasts"></section>
 
+  <section class="learn" id="lernen" aria-labelledby="learnH">
+    <div class="learn-head"><h2 id="learnH">Lernen</h2><span>Countdown, Fehler-Training, Karteikarten und Probeprüfung</span></div>
+    <div class="tools" id="tools">
+      <article class="tool count" id="countdown">
+        <div class="dates">
+          <h3>Countdown bis zur Prüfung</h3>
+          <label for="dateGk">Prüfung Gemeinschaftskunde<input type="date" id="dateGk"></label>
+          <label for="dateWk">Prüfung Wirtschaftskompetenz<input type="date" id="dateWk"></label>
+        </div>
+        <div class="days" id="days"></div>
+        <div class="today" id="today"></div>
+      </article>
+      <article class="tool">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+        <h3>Fehler-Training</h3>
+        <p>Nur die Fragen, die du falsch hattest. Falsche kommen so lange wieder, bis alle sitzen.</p>
+        <div class="info" id="fixInfo"></div>
+        <div class="row" id="fixRow"></div>
+      </article>
+      <article class="tool">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 2h12a2 2 0 0 1 2 2v12"/></svg></div>
+        <h3>Karteikarten</h3>
+        <p>Begriff ansehen, Karte umdrehen, ehrlich sein. Was du kannst, wird aussortiert.</p>
+        <div class="info" id="fcInfo"></div>
+        <div class="row" id="fcRow"></div>
+      </article>
+      <article class="tool">
+        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M9 2h6"/></svg></div>
+        <h3>Probeprüfung</h3>
+        <p>20 Fragen in 15 Minuten, ohne Hilfe zwischendurch. Am Ende bekommst du eine Note nach IHK-Schlüssel.</p>
+        <div class="info" id="exInfo"></div>
+        <div class="row" id="exRow"></div>
+      </article>
+    </div>
+  </section>
+
   <div id="shows" style="display:flex;flex-direction:column;gap:48px"></div>
 
   <section class="stand" id="stand" aria-labelledby="standH">
@@ -228,6 +331,8 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 </section>
 
 <script src="quiz-data.js"></script>
+<script src="cards-data.js"></script>
+<script src="chapters.js"></script>
 <script>
 const PODS = [
   {id:"gk", cls:"gk", glyph:"GK", name:"GK auf die Ohren", subject:"Gemeinschaftskunde",
@@ -258,6 +363,7 @@ const fmt=s=>{s=Math.max(0,Math.round(s||0));const h=Math.floor(s/3600),m=Math.f
 const mins=s=>Math.round(s/60)+" Min.";
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const pos=store.get("podcast-pos")||{};
+const done=store.get("podcast-done")||{};       // fertig gehörte Folgen
 const qstats=store.get("podcast-quiz-stats")||{};   // pro Quiz: {runs, best:{r,n}, last:{r,n}}
 const qans=store.get("podcast-quiz-answers")||{};    // pro Frage (Fragetext): {n: wie oft beantwortet, ok: letzte Antwort richtig}
 (()=>{const old=store.get("podcast-quiz"); if(old) for(const [k,v] of Object.entries(old)) if(!qstats[k]) qstats[k]={runs:1,best:v,last:v};})();
@@ -298,8 +404,16 @@ PODS.forEach(pod=>{
     const li=h("li",{class:"ep"});
     const top=document.createElement("div");
     top.append(txt("div","num",ep.num), txt("h3",null,ep.title));
-    const chips=h("ul",{class:"chips","aria-label":"Themen"});
-    ep.topics.forEach(x=>chips.appendChild(txt("li",null,x)));
+    const chips=h("ul",{class:"chips","aria-label":"Themen, antippen zum Hinspringen"});
+    const chap=(window.CHAPTERS||{})[ep.id];
+    if(chap) chap.forEach(([at,name])=>{
+      const li2=document.createElement("li");
+      const b=h("button",{type:"button","aria-label":`${name} ab ${fmt(at)} abspielen`});
+      b.append(document.createTextNode(name), txt("small",null,fmt(at)));
+      b.onclick=()=>start(ep.id,at);
+      li2.appendChild(b); chips.appendChild(li2);
+    });
+    else ep.topics.forEach(x=>chips.appendChild(txt("li",null,x)));
     const prog=h("div",{class:"prog","aria-hidden":"true"},"<i></i>");
     const foot=h("div",{class:"foot"});
     const meta=txt("span","meta","");
@@ -327,7 +441,9 @@ function paintCard(id){
   const pct=Math.min(100,at/ep.sec*100);
   c.bar.style.width=pct+"%";
   const left=ep.sec-at;
-  c.meta.textContent = at>5 && left>5 ? `noch ${fmt(left)} von ${fmt(ep.sec)}` : `${fmt(ep.sec)} · ${ep.mb.toFixed(1).replace(".",",")} MB`;
+  c.meta.replaceChildren();
+  if(at>5 && left>5) c.meta.textContent=`noch ${fmt(left)} von ${fmt(ep.sec)}`;
+  else { if(done[id]) c.meta.append(txt("span","done","✓ gehört"), document.createTextNode(" · ")); c.meta.append(document.createTextNode(`${fmt(ep.sec)} · ${ep.mb.toFixed(1).replace(".",",")} MB`)) }
   setLabel(id, at>5 && left>5 ? "Weiter" : "Abspielen");
 }
 
@@ -339,9 +455,11 @@ const SPEEDS=[1,1.25,1.5,1.75,2]; let speed=store.get("podcast-speed")||1;
 const speedBtn=document.getElementById("speed"); speedBtn.textContent=String(speed).replace(".",",")+"×";
 let currentId=null, seeking=false, lastSave=0;
 
-function start(id){
+function start(id, jump){
   const ep=byId[id];
-  if(currentId===id){ audio.paused?audio.play().catch(()=>{}):audio.pause(); return }
+  if(currentId===id && jump==null){ audio.paused?audio.play().catch(()=>{}):audio.pause(); return }
+  if(currentId===id){ audio.currentTime=jump; audio.play().catch(()=>{}); return }
+  if(jump!=null) pos[id]=jump;
   currentId=id;
   playerEl.hidden=false; document.body.classList.add("playing");
   playerEl.style.setProperty("--pc", getComputedStyle(document.documentElement).getPropertyValue(ep.pod.cls==="gk"?"--gk":"--wk"));
@@ -349,7 +467,7 @@ function start(id){
   document.getElementById("pTitle").textContent=ep.num+": "+ep.title;
   Object.entries(cards).forEach(([k,c])=>c.li.classList.toggle("on",k===id));
   audio.src=ep.src; audio.playbackRate=speed;
-  const at=pos[id]||0; const resume=at>5 && ep.sec-at>5;
+  const at=pos[id]||0; const resume=(jump!=null) || (at>5 && ep.sec-at>5);
   durEl.textContent=fmt(ep.sec); bar.max=ep.sec; bar.value=resume?at:0; cur.textContent=fmt(resume?at:0);
   audio.addEventListener("loadedmetadata",()=>{ if(resume) audio.currentTime=at; audio.playbackRate=speed },{once:true});
   audio.play().catch(()=>{});
@@ -373,7 +491,9 @@ audio.addEventListener("timeupdate",()=>{
   if(!seeking){bar.value=Math.round(audio.currentTime);cur.textContent=fmt(audio.currentTime)}
   save(false);
 });
-audio.addEventListener("ended",()=>{pos[currentId]=0;store.set("podcast-pos",pos);paintCard(currentId);setIcon(false)});
+audio.addEventListener("ended",()=>{pos[currentId]=0;store.set("podcast-pos",pos);
+  done[currentId]=true; if(currentId.endsWith("komplett")) byId[currentId].pod.eps.forEach(e=>done[e.id]=true);
+  store.set("podcast-done",done); Object.keys(cards).forEach(paintCard); paintToday(); setIcon(false)});
 function save(force){
   if(!currentId) return; const now=Date.now();
   if(!force && now-lastSave<4000) return; lastSave=now;
@@ -426,7 +546,7 @@ document.getElementById("standReset").onclick=()=>{
   if(!confirm("Willst du deinen ganzen Quiz-Fortschritt löschen?")) return;
   for(const k in qstats) delete qstats[k]; for(const k in qans) delete qans[k];
   store.set("podcast-quiz-stats",qstats); store.set("podcast-quiz-answers",qans); store.set("podcast-quiz",null);
-  Object.keys(cards).forEach(paintScore); paintStand();
+  Object.keys(cards).forEach(paintScore); paintStand(); refreshTools(); paintToday();
 };
 
 const dlg=document.getElementById("quiz"), qz=document.getElementById("qz");
@@ -441,16 +561,16 @@ function openQuiz(id){
     qs=shuffle(pool).sort((a,b)=>prio(a)-prio(b)).slice(0,10);
     qs=shuffle(qs);
   } else qs=shuffle(pool);
-  Q={id,ep,qs,i:0,res:[],answered:false,finished:false};
+  Q={id,ep,qs,i:0,res:[],answered:false,finished:false,mode:"normal",label:`${ep.pod.name} · ${ep.num}`,restart:()=>openQuiz(id)};
   dlg.className="quiz "+ep.pod.cls;
   renderQ();
   if(!dlg.open) dlg.showModal();
 }
 function head(){
   const top=h("div",{class:"qz-top"});
-  const t=txt("small",null,`${Q.ep.pod.name} · ${Q.ep.num}`); t.id="qzTitle";
+  const t=txt("small",null,Q.label); t.id="qzTitle";
   const btns=h("div",{class:"qz-btns"});
-  const re=h("button",{class:"qz-restart",type:"button"},ICON_RESTART+"Neu starten"); re.onclick=()=>openQuiz(Q.id);
+  const re=h("button",{class:"qz-restart",type:"button"},ICON_RESTART+"Neu starten"); re.onclick=()=>Q.restart();
   const x=h("button",{class:"qz-x",type:"button","aria-label":"Quiz schließen"},"×"); x.onclick=()=>dlg.close();
   btns.append(re,x); top.append(t,btns);
   return [top, qbar()];
@@ -459,9 +579,11 @@ function qbar(){
   const n=Q.qs.length, done=Q.res.length, ok=Q.res.filter(Boolean).length, s0=qstats[Q.id];
   const wrap=h("div",{class:"qz-bar"});
   const nums=h("div",{class:"qz-nums"});
-  nums.innerHTML=`<span>Frage <b>${Math.min(done+(Q.answered?0:1),n)}/${n}</b></span><span><b>${pct(done,n)} %</b> geschafft</span><span class="ok"><b>${ok}</b> richtig</span><span class="bad"><b>${done-ok}</b> falsch</span><span>Versuch <b>${(s0?s0.runs:0)+(Q.finished?0:1)}</b></span>`;
+  if(Q.mode==="exam") nums.innerHTML=`<span>Frage <b>${Math.min(done+(Q.answered?0:1),n)}/${n}</b></span><span><b>${pct(done,n)} %</b> geschafft</span><span>Zeit <b class="qz-timer" id="qzTimer">${fmt(Math.max(0,(Q.deadline-Date.now())/1000))}</b></span>`;
+  else if(Q.mode==="fix") nums.innerHTML=`<span>noch <b>${n-done}</b> offen</span><span class="ok"><b>${ok}</b> richtig</span><span class="bad"><b>${done-ok}</b> falsch</span><span><b>${pct(done,n)} %</b> geschafft</span>`;
+  else nums.innerHTML=`<span>Frage <b>${Math.min(done+(Q.answered?0:1),n)}/${n}</b></span><span><b>${pct(done,n)} %</b> geschafft</span><span class="ok"><b>${ok}</b> richtig</span><span class="bad"><b>${done-ok}</b> falsch</span><span>Versuch <b>${(s0?s0.runs:0)+(Q.finished?0:1)}</b></span>`;
   const steps=h("div",{class:"qz-steps","aria-hidden":"true"});
-  Q.qs.forEach((_,k)=>{const i=document.createElement("i");if(k<done)i.className=Q.res[k]?"ok":"bad";else if(k===Q.i)i.className="now";steps.appendChild(i)});
+  Q.qs.forEach((_,k)=>{const i=document.createElement("i");if(k<done)i.className=Q.mode==="exam"?"now":(Q.res[k]?"ok":"bad");else if(k===Q.i&&Q.mode!=="exam")i.className="now";steps.appendChild(i)});
   wrap.append(nums,steps);
   return wrap;
 }
@@ -476,6 +598,13 @@ function renderQ(){
     b.onclick=()=>{
       const ok=a===right; Q.res.push(ok); Q.answered=true;
       const prev=qans[q]||{n:0}; qans[q]={n:prev.n+1,ok}; store.set("podcast-quiz-answers",qans);
+      if(Q.mode==="exam"){
+        Q.picks.push(a);
+        opts.querySelectorAll("button").forEach(x=>x.disabled=true); b.classList.add("picked");
+        setTimeout(()=>{ if(!Q||Q.finished) return; if(Q.i===Q.qs.length-1) renderEnd(); else {Q.i++; renderQ()} },350);
+        return;
+      }
+      if(Q.mode==="fix" && !ok) Q.qs.push(Q.qs[Q.i]);
       opts.querySelectorAll("button").forEach(x=>{x.disabled=true; if(x.textContent===right)x.classList.add("right")});
       if(!ok) b.classList.add("wrong");
       const w=h("p",{class:"qz-why",role:"status"}); w.append(txt("b",null,ok?"Richtig!":"Leider falsch."), document.createTextNode(why));
@@ -484,7 +613,7 @@ function renderQ(){
       n.onclick=()=>{ if(last) renderEnd(); else {Q.i++; renderQ()} };
       qz.querySelector(".qz-bar").replaceWith(qbar());
       qz.append(w,n); n.focus();
-      Object.keys(cards).forEach(paintScore); paintStand();
+      Object.keys(cards).forEach(paintScore); paintStand(); refreshTools();
     };
     opts.appendChild(b);
   });
@@ -492,11 +621,13 @@ function renderQ(){
   opts.firstChild.focus();
 }
 function renderEnd(){
+  if(Q.mode==="exam") return renderExamEnd();
+  if(Q.mode==="fix") return renderFixEnd();
   const r=Q.res.filter(Boolean).length, n=Q.qs.length;
   const s0=qstats[Q.id]||{runs:0,best:null,last:null};
   s0.runs++; s0.last={r,n}; if(!s0.best || r/n>s0.best.r/s0.best.n) s0.best={r,n};
   qstats[Q.id]=s0; store.set("podcast-quiz-stats",qstats); Q.finished=true;
-  Object.keys(cards).forEach(paintScore); paintStand();
+  Object.keys(cards).forEach(paintScore); paintStand(); refreshTools(); paintToday();
   const [top]=head(); qz.replaceChildren(top, qbar());
   const end=h("div",{class:"qz-end"});
   const p=r/n;
@@ -513,6 +644,193 @@ function renderEnd(){
   qz.appendChild(end); again.focus();
 }
 paintStand();
+
+// ---------- Hilfen für die Lernfunktionen ----------
+const SUBJ={gk:"GK",wk:"Wirtschaft",both:"GK + Wirtschaft"};
+const podOf=k=>PODS.find(p=>p.cls===k);
+function poolOf(subj){
+  const ids=[]; PODS.forEach(p=>{ if(subj==="both"||p.cls===subj) p.eps.forEach(e=>ids.push(e.id)) });
+  return ids.flatMap(id=>window.QUIZ[id]||[]);
+}
+function wrongOf(subj){ return poolOf(subj).filter(q=>qans[q[0]]&&!qans[q[0]].ok) }
+function pillBtn(cls,label,fn){const b=h("button",{class:"pill "+cls,type:"button"},label);b.onclick=fn;return b}
+
+// ---------- Fehler-Training ----------
+function openFix(subj){
+  const qs=shuffle(wrongOf(subj)); if(!qs.length) return;
+  Q={id:null,qs,i:0,res:[],answered:false,finished:false,mode:"fix",subj,start:qs.length,
+     label:`Fehler-Training · ${SUBJ[subj]}`,restart:()=>openFix(subj)};
+  dlg.className="quiz "+(subj==="wk"?"wk":"gk");
+  renderQ(); if(!dlg.open) dlg.showModal();
+}
+function renderFixEnd(){
+  Q.finished=true;
+  const [top]=head(); qz.replaceChildren(top, qbar());
+  const end=h("div",{class:"qz-end"});
+  end.append(txt("p","qz-score","✓"), txt("p",null,`Alle ${Q.start} Fehler ausgebessert. Du hast dafür ${Q.res.length} Antworten gebraucht.`));
+  const row=h("div",{class:"row"});
+  const subj=Q.subj;
+  row.append(pillBtn("qz-next","Zur Probeprüfung",()=>openExam(subj)), pillBtn("ghost","Schließen",()=>dlg.close()));
+  end.appendChild(row); qz.appendChild(end); refreshTools(); paintToday();
+}
+
+// ---------- Probeprüfung ----------
+const EXAM_N=20, EXAM_MIN=15;
+const exams=store.get("podcast-exams")||[];
+function noteOf(p){ // IHK-Notenschlüssel nach Punkten
+  const pts=Math.round(p*100);
+  return pts>=92?[1,"sehr gut"]:pts>=81?[2,"gut"]:pts>=67?[3,"befriedigend"]:pts>=50?[4,"ausreichend"]:pts>=30?[5,"mangelhaft"]:[6,"ungenügend"];
+}
+let timerId=null;
+function openExam(subj){
+  const qs=shuffle(poolOf(subj)).slice(0,EXAM_N);
+  Q={id:null,qs,i:0,res:[],picks:[],answered:false,finished:false,mode:"exam",subj,t0:Date.now(),deadline:Date.now()+EXAM_MIN*60000,
+     label:`Probeprüfung · ${SUBJ[subj]}`,restart:()=>openExam(subj)};
+  dlg.className="quiz "+(subj==="wk"?"wk":"gk");
+  renderQ(); if(!dlg.open) dlg.showModal();
+  clearInterval(timerId);
+  timerId=setInterval(()=>{
+    if(!Q||Q.mode!=="exam"||Q.finished){clearInterval(timerId);return}
+    const left=(Q.deadline-Date.now())/1000, el=document.getElementById("qzTimer");
+    if(el){el.textContent=fmt(Math.max(0,left)); el.classList.toggle("low",left<60)}
+    if(left<=0) renderExamEnd(true);
+  },500);
+}
+function renderExamEnd(timeUp){
+  if(Q.finished) return; Q.finished=true; clearInterval(timerId);
+  const n=Q.qs.length, r=Q.res.filter(Boolean).length, p=r/n, [note,word]=noteOf(p);
+  const used=Math.min(EXAM_MIN*60,Math.round((Date.now()-Q.t0)/1000));
+  exams.unshift({d:new Date().toISOString().slice(0,10),s:Q.subj,r,n,note}); exams.length=Math.min(exams.length,20);
+  store.set("podcast-exams",exams);
+  const [top]=head(); qz.replaceChildren(top);
+  const end=h("div",{class:"qz-end"});
+  if(timeUp) end.appendChild(txt("p",null,"Die Zeit ist abgelaufen. Offene Fragen zählen als falsch."));
+  const nb=h("div",{class:"note"});
+  nb.appendChild(txt("span","n",String(note)));
+  const nd=document.createElement("div");
+  nd.append(txt("b",null,word), txt("span",null,`${Math.round(p*100)} Punkte · ${r} von ${n} richtig · Zeit ${fmt(used)}`));
+  nb.appendChild(nd); end.appendChild(nb);
+  const wrong=Q.qs.map((q,k)=>({q,pick:Q.picks[k],ok:Q.res[k]})).filter(x=>!x.ok);
+  if(wrong.length){
+    end.appendChild(txt("p",null,"Das solltest du dir noch einmal ansehen:"));
+    const ul=h("ul",{class:"review"});
+    wrong.forEach(x=>{const li=document.createElement("li");
+      li.append(txt("b",null,x.q[0]), txt("span",null,"Richtig: "+x.q[1]));
+      li.appendChild(txt("span",null,x.pick?"Deine Antwort: "+x.pick:"Nicht beantwortet"));
+      ul.appendChild(li)});
+    end.appendChild(ul);
+  } else end.appendChild(txt("p",null,"Keine einzige falsche Antwort. Stark!"));
+  const row=h("div",{class:"row"}), subj=Q.subj;
+  const again=pillBtn("qz-next",ICON_RESTART+"Neue Probeprüfung",()=>openExam(subj));
+  row.appendChild(again);
+  if(wrong.some(x=>x.pick)) row.appendChild(pillBtn("ghost","Fehler trainieren",()=>openFix(subj)));
+  end.appendChild(row); qz.appendChild(end); again.focus();
+  Object.keys(cards).forEach(paintScore); paintStand(); refreshTools(); paintToday();
+}
+dlg.addEventListener("close",()=>clearInterval(timerId));
+
+// ---------- Karteikarten ----------
+const known=store.get("podcast-cards-known")||{};
+let F=null;
+function openCards(subj){
+  const all=window.CARDS[subj]||[];
+  F={subj,all,deck:shuffle(all.filter(c=>!known[c[0]])),flipped:false};
+  dlg.className="quiz "+subj;
+  renderCard(); if(!dlg.open) dlg.showModal();
+}
+function cardHead(){
+  const top=h("div",{class:"qz-top"});
+  const t=txt("small",null,`Karteikarten · ${SUBJ[F.subj]}`); t.id="qzTitle";
+  const btns=h("div",{class:"qz-btns"});
+  const re=h("button",{class:"qz-restart",type:"button"},ICON_RESTART+"Neu mischen");
+  re.onclick=()=>{F.deck=shuffle(F.deck);renderCard()};
+  const x=h("button",{class:"qz-x",type:"button","aria-label":"Karteikarten schließen"},"×"); x.onclick=()=>dlg.close();
+  btns.append(re,x); top.append(t,btns);
+  const k=F.all.filter(c=>known[c[0]]).length, n=F.all.length;
+  const wrap=h("div",{class:"qz-bar"});
+  const nums=h("div",{class:"qz-nums"});
+  nums.innerHTML=`<span class="ok"><b>${k}/${n}</b> gelernt</span><span><b>${F.deck.length}</b> im Stapel</span><span><b>${pct(k,n)} %</b> geschafft</span>`;
+  const m=h("div",{class:"mini"}); m.innerHTML=`<i class="r" style="width:${k/n*100}%"></i>`;
+  wrap.append(nums,m);
+  return [top,wrap];
+}
+function renderCard(){
+  qz.replaceChildren(...cardHead());
+  if(!F.deck.length){
+    const end=h("div",{class:"qz-end"});
+    end.append(txt("p","qz-score","✓"), txt("p",null,"Du kennst alle Karten in diesem Fach."));
+    const row=h("div",{class:"row"});
+    row.append(pillBtn("qz-next",ICON_RESTART+"Alle nochmal üben",()=>{F.all.forEach(c=>delete known[c[0]]);store.set("podcast-cards-known",known);refreshTools();openCards(F.subj)}),
+               pillBtn("ghost","Schließen",()=>dlg.close()));
+    end.appendChild(row); qz.appendChild(end); return;
+  }
+  const [term,def]=F.deck[0];
+  const wrap=h("div",{class:"fc"});
+  const card=h("button",{class:"fc-card",type:"button","aria-label":"Karte umdrehen"});
+  const inner=h("div",{class:"fc-in"});
+  const front=h("div",{class:"fc-side fc-front"}); front.append(txt("b",null,term), txt("small",null,"Tippen zum Umdrehen"));
+  const back=h("div",{class:"fc-side fc-back"}); back.append(txt("span",null,def));
+  inner.append(front,back); card.appendChild(inner); wrap.appendChild(card);
+  const acts=h("div",{class:"fc-acts"});
+  const again=pillBtn("again","Nochmal",()=>{const c=F.deck.shift();F.deck.splice(Math.min(F.deck.length,3),0,c);renderCard()});
+  const know=pillBtn("know","Kann ich",()=>{known[F.deck.shift()[0]]=true;store.set("podcast-cards-known",known);refreshTools();paintToday();renderCard()});
+  card.onclick=()=>{const f=!card.classList.contains("flip");card.classList.toggle("flip",f);acts.hidden=!f; if(f) know.focus()};
+  acts.append(again,know); acts.hidden=true;
+  qz.append(wrap,acts); card.focus();
+}
+
+// ---------- Werkzeug-Karten ----------
+function refreshTools(){
+  const fg=wrongOf("gk").length, fw=wrongOf("wk").length;
+  document.getElementById("fixInfo").textContent = fg+fw ? `${fg} Fehler in GK · ${fw} Fehler in Wirtschaft` : "Noch keine Fehler gesammelt. Mach zuerst ein Quiz.";
+  const fr=document.getElementById("fixRow"); fr.replaceChildren();
+  const b1=pillBtn("gk","GK üben",()=>openFix("gk")); b1.disabled=!fg;
+  const b2=pillBtn("wk","Wirtschaft üben",()=>openFix("wk")); b2.disabled=!fw;
+  fr.append(b1,b2);
+  const kn=k=>(window.CARDS[k]||[]).filter(c=>known[c[0]]).length, tot=k=>(window.CARDS[k]||[]).length;
+  document.getElementById("fcInfo").textContent=`GK: ${kn("gk")} von ${tot("gk")} gelernt · Wirtschaft: ${kn("wk")} von ${tot("wk")}`;
+  const cr=document.getElementById("fcRow"); cr.replaceChildren();
+  cr.append(pillBtn("gk","GK-Karten",()=>openCards("gk")), pillBtn("wk","Wirtschaft-Karten",()=>openCards("wk")));
+  const last=exams.slice(0,3).map(e=>`${e.s==="gk"?"GK":e.s==="wk"?"Wirtschaft":"Beide"}: Note ${e.note} (${e.r}/${e.n})`).join(" · ");
+  document.getElementById("exInfo").textContent = last ? "Zuletzt: "+last : "";
+  const er=document.getElementById("exRow"); er.replaceChildren();
+  er.append(pillBtn("gk","GK",()=>openExam("gk")), pillBtn("wk","Wirtschaft",()=>openExam("wk")), pillBtn("both","Beide gemischt",()=>openExam("both")));
+}
+
+// ---------- Countdown ----------
+const dates=store.get("podcast-dates")||{};
+const dGk=document.getElementById("dateGk"), dWk=document.getElementById("dateWk");
+dGk.value=dates.gk||""; dWk.value=dates.wk||"";
+[[dGk,"gk"],[dWk,"wk"]].forEach(([el,k])=>el.addEventListener("change",()=>{dates[k]=el.value;store.set("podcast-dates",dates);paintToday()}));
+function daysTo(iso){ if(!iso) return null; const t=new Date(iso+"T00:00:00"), n=new Date(); n.setHours(0,0,0,0); return Math.round((t-n)/864e5) }
+function paintToday(){
+  const days=document.getElementById("days"); days.replaceChildren();
+  const list=[["gk",dates.gk],["wk",dates.wk]].map(([k,d])=>({k,d,n:daysTo(d)}));
+  list.forEach(x=>{
+    const row=h("div",{class:"d "+x.k}), fach=x.k==="gk"?"GK":"Wirtschaft";
+    if(x.n==null) row.append(txt("span",null,`Trag dein Prüfungsdatum für ${fach} ein.`));
+    else if(x.n>1) row.append(txt("b",null,String(x.n)), txt("span",null,`Tage bis ${fach}`));
+    else if(x.n===1) row.append(txt("b",null,"1"), txt("span",null,`Tag bis ${fach}. Morgen gilt's!`));
+    else if(x.n===0) row.append(txt("b",null,"Heute"), txt("span",null,`ist ${fach}. Viel Erfolg!`));
+    else row.append(txt("span",null,`Die Prüfung in ${fach} ist vorbei.`));
+    days.appendChild(row);
+  });
+  const upcoming=list.filter(x=>x.n!=null&&x.n>=0).sort((a,b)=>a.n-b.n);
+  const order=upcoming.length?[upcoming[0].k, upcoming[0].k==="gk"?"wk":"gk"]:["gk","wk"];
+  let tip=null;
+  for(const k of order){
+    const pod=podOf(k);
+    const notHeard=pod.eps.find(e=>!done[e.id]);
+    if(notHeard){tip={text:`${pod.name}, ${notHeard.num}: ${notHeard.title} anhören`,btn:"Jetzt anhören",fn:()=>start(notHeard.id)};break}
+    const weak=pod.eps.find(e=>{const st=standOf(window.QUIZ[e.id]);return st.ok/st.total<.8});
+    if(weak){tip={text:`Quiz zu ${weak.num}: ${weak.title}`,btn:"Quiz starten",fn:()=>openQuiz(weak.id)};break}
+    const kc=(window.CARDS[k]||[]).filter(c=>!known[c[0]]).length;
+    if(kc){tip={text:`${kc} Karteikarten in ${k==="gk"?"GK":"Wirtschaft"} sind noch offen`,btn:"Karten lernen",fn:()=>openCards(k)};break}
+  }
+  if(!tip){const k=order[0];tip={text:"Du hast alles einmal geschafft. Zeit für eine Probeprüfung.",btn:"Probeprüfung",fn:()=>openExam(k)}}
+  document.getElementById("today").replaceChildren(txt("small",null,"Heute dran"), txt("b",null,tip.text), pillBtn("",tip.btn,tip.fn));
+}
+refreshTools(); paintToday();
 dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
 
 // Lock screen / headphone controls
