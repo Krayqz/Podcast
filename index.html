@@ -271,6 +271,38 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 .review li{border-left:4px solid var(--bad);background:var(--bad-soft);border-radius:8px;padding:10px 12px;font-size:15px}
 .review li b{display:block;margin-bottom:4px}
 .review li span{display:block}
+/* Freitext-Fragen */
+.op-hint{margin:0;color:var(--muted);font-size:14px}
+.op-hint.warn{color:var(--bad);font-weight:700}
+.op-in{display:block;width:100%;min-height:136px;resize:vertical;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;font-size:16px;line-height:1.45;background:var(--surface);color:var(--fg)}
+.op-in:focus{outline:none;border-color:var(--c)}
+.op-in[readonly]{background:var(--soft);border-color:transparent;resize:none}
+.op-acts{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;align-items:center}
+.op-acts .pill.ghost,.qz-end .pill.ghost{background:var(--soft);color:var(--fg)}
+.op-fb{display:flex;flex-direction:column;gap:10px;width:100%}
+.op-verdict{margin:0;padding:10px 12px 10px 14px;border-radius:10px;font-size:15px;border-left:4px solid var(--c);background:var(--soft)}
+.op-verdict.ok{background:var(--ok-soft);border-color:var(--ok)}
+.op-verdict.bad{background:var(--bad-soft);border-color:var(--bad)}
+.op-verdict b{display:block;font-size:16px}
+.op-keys{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.35}
+.op-keys li{display:flex;gap:9px;align-items:flex-start}
+.op-keys li::before{content:"";flex:none;width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line);display:grid;place-items:center;font-size:12px;font-weight:900}
+.op-keys li.hit::before{content:"✓";background:var(--ok);box-shadow:none;color:var(--surface)}
+.op-keys li.miss{color:var(--muted)}
+.op-keys .hd{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.op-keys .hd::before{display:none}
+.op-model{margin:0;padding:12px 14px;border-radius:12px;background:var(--soft);font-size:15px}
+.op-model b{display:block;margin-bottom:2px}
+.op-ans{margin:0;padding:8px 12px;border-left:3px solid var(--line);font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere}
+.op-ans.empty{color:var(--muted);font-style:italic}
+.qz-end h4{font-family:var(--display);font-stretch:112%;font-size:18px;margin:8px 0 0}
+.opr{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;width:100%}
+.opr>li{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+.opr .top{display:flex;flex-direction:row;max-width:none;justify-content:space-between;align-items:baseline;gap:10px}
+.opr .top b{font-size:15px;line-height:1.35}
+.opr .pts{flex:none;font-family:var(--display);font-stretch:112%;font-weight:800;font-variant-numeric:tabular-nums;color:var(--c)}
+.opr .pts.full{color:var(--ok)} .opr .pts.zero{color:var(--bad)}
+.opr .pill{align-self:flex-start;min-height:40px;padding:8px 14px;font-size:14px}
 .fc{perspective:1200px;width:100%}
 .fc-card{appearance:none;border:0;padding:0;background:none;width:100%;min-height:220px;cursor:pointer;position:relative;display:block;color:var(--fg);font:inherit}
 .fc-in{position:absolute;inset:0;transform-style:preserve-3d}
@@ -395,12 +427,12 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
       <article class="tool">
         <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M9 2h6"/></svg></div>
         <h3>Probeprüfung</h3>
-        <p>20 Fragen in 15 Minuten, ohne Hilfe zwischendurch. Am Ende bekommst du eine Note nach IHK-Schlüssel.</p>
+        <p>15 Fragen zum Ankreuzen und 5 zum Selberschreiben in 30 Minuten. Deine eigenen Worte werden nach Inhalt bewertet, nicht nach Wortlaut. Am Ende gibt es Punkte und eine Note nach IHK-Schlüssel.</p>
         <div class="info" id="exInfo"></div>
         <div class="row" id="exRow"></div>
       </article>
     </div>
-    <div class="sec-head"><h2>Quiz zu jeder Folge</h2><span>5 bis 10 Fragen mit Erklärung</span></div>
+    <div class="sec-head"><h2>Quiz zu jeder Folge</h2><span>Bis zu 12 Fragen pro Runde, zum Ankreuzen und Selberschreiben</span></div>
     <ul class="qlist" id="qlist"></ul>
   </section>
 
@@ -434,6 +466,8 @@ dialog.quiz::backdrop{background:rgb(10 12 18 / .6)}
 </section>
 
 <script src="quiz-data.js"></script>
+<script src="open-data.js"></script>
+<script src="grader.js"></script>
 <script src="cards-data.js"></script>
 <script src="chapters.js"></script>
 <script>
@@ -657,15 +691,28 @@ document.getElementById("standReset").onclick=()=>{
 const dlg=document.getElementById("quiz"), qz=document.getElementById("qz");
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 let Q=null;
+// Freitext-Fragen haben statt falscher Antworten eine Bewertungsregel (Objekt statt Liste)
+const isOpen=q=>!Array.isArray(q[2]);
+const OPEN_PTS=3, ROUND_N=12;
+const fmtPts=v=>String(v).replace(".",",");
+// Fragen für eine Runde: zuerst neue und falsch beantwortete, höchstens maxOpen zum Selberschreiben
+function pickRound(pool,n,maxOpen){
+  const prio=q=>{const a=qans[q[0]]; return !a?0:(a.ok?2:1)};
+  const out=[]; let open=0;
+  for(const q of shuffle(pool).sort((a,b)=>prio(a)-prio(b))){
+    if(out.length>=n) break;
+    if(isOpen(q)){ if(open>=maxOpen) continue; open++ }
+    out.push(q);
+  }
+  return shuffle(out);
+}
+function record(q,ok,override){
+  const prev=qans[q]||{n:0}; qans[q]={n:override?Math.max(1,prev.n):prev.n+1,ok}; store.set("podcast-quiz-answers",qans);
+}
+function refreshAll(){ Object.keys(cards).forEach(paintScore); paintStand(); refreshTools(); paintToday() }
 function openQuiz(id){
   const ep=byId[id], pool=window.QUIZ&&window.QUIZ[id]; if(!pool) return;
-  let qs;
-  if(id.endsWith("komplett")){
-    // Erst offene und falsch beantwortete Fragen, dann der Rest
-    const prio=q=>{const a=qans[q[0]]; return !a?0:(a.ok?2:1)};
-    qs=shuffle(pool).sort((a,b)=>prio(a)-prio(b)).slice(0,10);
-    qs=shuffle(qs);
-  } else qs=shuffle(pool);
+  const qs=id.endsWith("komplett")?pickRound(pool,10,2):pickRound(pool,ROUND_N,3);
   Q={id,ep,qs,i:0,res:[],answered:false,finished:false,mode:"normal",label:`${ep.pod.name} · ${ep.num}`,restart:()=>openQuiz(id)};
   dlg.className="quiz "+ep.pod.cls;
   renderQ();
@@ -693,6 +740,7 @@ function qbar(){
   return wrap;
 }
 function renderQ(){
+  if(isOpen(Q.qs[Q.i])) return renderOpen(Q.qs[Q.i]);
   const [q,right,wrong,why]=Q.qs[Q.i];
   Q.answered=false;
   qz.replaceChildren(...head());
@@ -704,7 +752,7 @@ function renderQ(){
       const ok=a===right; Q.res.push(ok); Q.answered=true;
       const prev=qans[q]||{n:0}; qans[q]={n:prev.n+1,ok}; store.set("podcast-quiz-answers",qans);
       if(Q.mode==="exam"){
-        Q.picks.push(a);
+        Q.picks[Q.i]=a;
         opts.querySelectorAll("button").forEach(x=>x.disabled=true); b.classList.add("picked");
         setTimeout(()=>{ if(!Q||Q.finished) return; if(Q.i===Q.qs.length-1) renderEnd(); else {Q.i++; renderQ()} },350);
         return;
@@ -724,6 +772,65 @@ function renderQ(){
   });
   qz.appendChild(opts);
   opts.firstChild.focus();
+}
+// Kernpunkte und Musterlösung nach einer Freitext-Antwort
+function openFeedback(item,g,showWhy){
+  const fb=h("div",{class:"op-fb"});
+  const v=h("p",{class:"op-verdict "+(g.ok?"ok":g.got?"part":"bad"),role:"status"});
+  v.append(txt("b",null,g.ok?"Richtig!":g.got?"Teilweise richtig":"Noch nicht richtig"),
+    document.createTextNode(g.ok?"Alle wichtigen Punkte sind drin.":`Du hast ${g.got} von ${g.need} nötigen Kernpunkten getroffen.`));
+  const ul=h("ul",{class:"op-keys"});
+  ul.appendChild(txt("li","hd",g.need<g.labels.length?`Kernpunkte (${g.need} davon reichen)`:"Kernpunkte"));
+  g.labels.forEach((l,k)=>ul.appendChild(txt("li",g.hits[k]?"hit":"miss",l)));
+  const m=h("p",{class:"op-model"}); m.append(txt("b",null,"Musterlösung"),document.createTextNode(item[1]));
+  fb.append(v,ul,m);
+  if(showWhy&&item[3]) fb.appendChild(txt("p","op-hint",item[3]));
+  return fb;
+}
+function markOverride(fb){
+  const v=fb.querySelector(".op-verdict"); v.className="op-verdict ok";
+  v.replaceChildren(txt("b",null,"Als richtig gewertet"),document.createTextNode("Du hast deine Antwort mit der Musterlösung verglichen und selbst als richtig gewertet."));
+}
+function renderOpen(item){
+  const [q,,spec]=item;
+  Q.answered=false;
+  qz.replaceChildren(...head());
+  qz.appendChild(txt("h3",null,q));
+  const hint=txt("p","op-hint","Schreib in eigenen Worten. Es zählt der Inhalt, nicht der genaue Wortlaut.");
+  const ta=h("textarea",{class:"op-in",id:"opIn",rows:"5","aria-label":"Deine Antwort",placeholder:"Deine Antwort …",autocapitalize:"sentences",spellcheck:"true"});
+  const row=h("div",{class:"op-acts"});
+  const last=()=>Q.i===Q.qs.length-1;
+  const go=()=>{ if(last()) renderEnd(); else {Q.i++; renderQ()} };
+  if(Q.mode==="exam") row.append(pillBtn("qz-next",last()?"Abgeben":"Weiter",()=>submit(false)));
+  else row.append(pillBtn("ghost","Weiß ich nicht",()=>submit(true)), pillBtn("qz-next","Antwort prüfen",()=>submit(false)));
+  ta.addEventListener("keydown",e=>{ if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault(); submit(false)} });
+  qz.append(hint,ta,row); ta.focus();
+  function submit(skip){
+    if(Q.answered) return;
+    const text=skip?"":ta.value.trim();
+    if(!text&&!skip&&Q.mode!=="exam"){ hint.textContent="Schreib erst eine Antwort oder tippe auf „Weiß ich nicht“."; hint.classList.add("warn"); ta.focus(); return }
+    const g=window.GRADER.grade(item,text);
+    Q.answered=true; Q.res.push(g.ok); record(q,g.ok);
+    if(Q.mode==="exam"){ Q.picks[Q.i]=text; Q.grades[Q.i]=g; go(); return }
+    ta.readOnly=true; hint.remove(); row.remove();
+    const requeued=Q.mode==="fix"&&!g.ok; if(requeued) Q.qs.push(item);
+    const fb=openFeedback(item,g,true);
+    const acts=h("div",{class:"op-acts"});
+    const next=pillBtn("qz-next",last()?"Ergebnis ansehen":"Nächste Frage",go);
+    if(!g.ok&&text){
+      const ov=pillBtn("ghost","Meine Antwort stimmt doch",()=>{
+        Q.res[Q.res.length-1]=true; record(q,true,true);
+        if(requeued&&Q.qs[Q.qs.length-1]===item) Q.qs.pop();
+        markOverride(fb); ov.remove(); next.textContent=last()?"Ergebnis ansehen":"Nächste Frage";
+        qz.querySelector(".qz-bar").replaceWith(qbar()); refreshAll(); next.focus();
+      });
+      acts.appendChild(ov);
+    }
+    acts.appendChild(next);
+    qz.querySelector(".qz-bar").replaceWith(qbar());
+    qz.append(fb,acts); next.focus();
+    Object.keys(cards).forEach(paintScore); paintStand(); refreshTools();
+  }
 }
 function renderEnd(){
   if(Q.mode==="exam") return renderExamEnd();
@@ -780,7 +887,8 @@ function renderFixEnd(){
 }
 
 // ---------- Probeprüfung ----------
-const EXAM_N=20, EXAM_MIN=15;
+// 15 Fragen zum Ankreuzen (je 1 Punkt) und 5 zum Selberschreiben (je 3 Punkte)
+const EXAM_MC=15, EXAM_OPEN=5, EXAM_MIN=30;
 const exams=store.get("podcast-exams")||[];
 function noteOf(p){ // IHK-Notenschlüssel nach Punkten
   const pts=Math.round(p*100);
@@ -788,8 +896,10 @@ function noteOf(p){ // IHK-Notenschlüssel nach Punkten
 }
 let timerId=null;
 function openExam(subj){
-  const qs=shuffle(poolOf(subj)).slice(0,EXAM_N);
-  Q={id:null,qs,i:0,res:[],picks:[],answered:false,finished:false,mode:"exam",subj,t0:Date.now(),deadline:Date.now()+EXAM_MIN*60000,
+  const pool=poolOf(subj);
+  const mc=shuffle(pool.filter(q=>!isOpen(q))).slice(0,EXAM_MC);
+  const op=shuffle(pool.filter(isOpen)).slice(0,EXAM_OPEN);
+  Q={id:null,qs:[...mc,...op],i:0,res:[],picks:[],grades:[],answered:false,finished:false,mode:"exam",subj,t0:Date.now(),deadline:Date.now()+EXAM_MIN*60000,
      label:`Probeprüfung · ${SUBJ[subj]}`,restart:()=>openExam(subj)};
   dlg.className="quiz "+(subj==="wk"?"wk":"gk");
   renderQ(); if(!dlg.open) dlg.showModal();
@@ -801,36 +911,72 @@ function openExam(subj){
     if(left<=0) renderExamEnd(true);
   },500);
 }
+const ptsOf=g=>!g?0:g.ov?OPEN_PTS:Math.round(g.frac*OPEN_PTS*2)/2;
+function examScore(){
+  let r=0,n=0;
+  Q.qs.forEach((q,k)=>{ if(isOpen(q)){n+=OPEN_PTS; r+=ptsOf(Q.grades[k])} else {n+=1; if(Q.res[k]) r+=1} });
+  return {r,n};
+}
 function renderExamEnd(timeUp){
-  if(Q.finished) return; Q.finished=true; clearInterval(timerId);
-  const n=Q.qs.length, r=Q.res.filter(Boolean).length, p=r/n, [note,word]=noteOf(p);
-  const used=Math.min(EXAM_MIN*60,Math.round((Date.now()-Q.t0)/1000));
-  exams.unshift({d:new Date().toISOString().slice(0,10),s:Q.subj,r,n,note}); exams.length=Math.min(exams.length,20);
-  store.set("podcast-exams",exams);
+  if(Q.finished) return;
+  // Zeit abgelaufen: eine angefangene Freitext-Antwort wird trotzdem gewertet
+  const cur=Q.qs[Q.i], ta=document.getElementById("opIn");
+  if(timeUp&&!Q.answered&&isOpen(cur)&&ta&&ta.value.trim()){
+    const g=window.GRADER.grade(cur,ta.value.trim()); Q.picks[Q.i]=ta.value.trim(); Q.grades[Q.i]=g; Q.res[Q.i]=g.ok; record(cur[0],g.ok);
+  }
+  Q.finished=true; Q.timeUp=!!timeUp; clearInterval(timerId);
+  Q.used=Math.min(EXAM_MIN*60,Math.round((Date.now()-Q.t0)/1000));
+  Q.entry={d:new Date().toISOString().slice(0,10),s:Q.subj,r:0,n:0,note:6,p:1};
+  exams.unshift(Q.entry); exams.length=Math.min(exams.length,20);
+  showExamResult(); refreshAll();
+}
+function showExamResult(){
+  const {r,n}=examScore(), p=r/n, [note,word]=noteOf(p);
+  Object.assign(Q.entry,{r,n,note}); store.set("podcast-exams",exams);
+  const scroll=dlg.scrollTop;
   const [top]=head(); qz.replaceChildren(top);
   const end=h("div",{class:"qz-end"});
-  if(timeUp) end.appendChild(txt("p",null,"Die Zeit ist abgelaufen. Offene Fragen zählen als falsch."));
+  if(Q.timeUp) end.appendChild(txt("p",null,"Die Zeit ist abgelaufen. Offene Fragen zählen als falsch."));
   const nb=h("div",{class:"note"});
   nb.appendChild(txt("span","n",String(note)));
   const nd=document.createElement("div");
-  nd.append(txt("b",null,word), txt("span",null,`${Math.round(p*100)} Punkte · ${r} von ${n} richtig · Zeit ${fmt(used)}`));
+  nd.append(txt("b",null,word), txt("span",null,`${fmtPts(r)} von ${n} Punkten (${Math.round(p*100)} %) · Zeit ${fmt(Q.used)}`));
   nb.appendChild(nd); end.appendChild(nb);
-  const wrong=Q.qs.map((q,k)=>({q,pick:Q.picks[k],ok:Q.res[k]})).filter(x=>!x.ok);
+  const subj=Q.subj, idx=Q.qs.map((q,k)=>k);
+  const mcIdx=idx.filter(k=>!isOpen(Q.qs[k])), opIdx=idx.filter(k=>isOpen(Q.qs[k]));
+  const wrong=mcIdx.filter(k=>!Q.res[k]);
+  end.appendChild(txt("h4",null,`Ankreuzen: ${mcIdx.length-wrong.length} von ${mcIdx.length} richtig`));
   if(wrong.length){
-    end.appendChild(txt("p",null,"Das solltest du dir noch einmal ansehen:"));
     const ul=h("ul",{class:"review"});
-    wrong.forEach(x=>{const li=document.createElement("li");
-      li.append(txt("b",null,x.q[0]), txt("span",null,"Richtig: "+x.q[1]));
-      li.appendChild(txt("span",null,x.pick?"Deine Antwort: "+x.pick:"Nicht beantwortet"));
+    wrong.forEach(k=>{const q=Q.qs[k], li=document.createElement("li");
+      li.append(txt("b",null,q[0]), txt("span",null,"Richtig: "+q[1]), txt("span",null,Q.picks[k]?"Deine Antwort: "+Q.picks[k]:"Nicht beantwortet"));
       ul.appendChild(li)});
     end.appendChild(ul);
-  } else end.appendChild(txt("p",null,"Keine einzige falsche Antwort. Stark!"));
-  const row=h("div",{class:"row"}), subj=Q.subj;
+  } else end.appendChild(txt("p",null,"Keine falsche Antwort beim Ankreuzen. Stark!"));
+  if(opIdx.length){
+    const opPts=opIdx.reduce((a,k)=>a+ptsOf(Q.grades[k]),0);
+    end.appendChild(txt("h4",null,`Selbst geschrieben: ${fmtPts(opPts)} von ${opIdx.length*OPEN_PTS} Punkten`));
+    const ul=h("ul",{class:"opr"});
+    opIdx.forEach(k=>{
+      const q=Q.qs[k], g=Q.grades[k], text=Q.picks[k]||"", pts=ptsOf(g), li=document.createElement("li");
+      const tp=h("div",{class:"top"}); tp.append(txt("b",null,q[0]), txt("span","pts"+(pts===OPEN_PTS?" full":pts===0?" zero":""),`${fmtPts(pts)}/${OPEN_PTS}`));
+      li.append(tp, txt("p","op-ans"+(text?"":" empty"),text||"Nicht beantwortet"));
+      const fb=openFeedback(q,g||window.GRADER.grade(q,""),false);
+      if(g&&g.ov) markOverride(fb);
+      li.appendChild(fb);
+      if(text&&pts<OPEN_PTS) li.appendChild(pillBtn("ghost","Meine Antwort stimmt doch",()=>{
+        g.ov=true; Q.res[k]=true; record(q[0],true,true); showExamResult(); refreshAll();
+      }));
+      ul.appendChild(li);
+    });
+    end.appendChild(ul);
+  }
+  const row=h("div",{class:"row"});
   const again=pillBtn("qz-next",ICON_RESTART+"Neue Probeprüfung",()=>openExam(subj));
   row.appendChild(again);
-  if(wrong.some(x=>x.pick)) row.appendChild(pillBtn("ghost","Fehler trainieren",()=>openFix(subj)));
-  end.appendChild(row); qz.appendChild(end); again.focus();
-  Object.keys(cards).forEach(paintScore); paintStand(); refreshTools(); paintToday();
+  if(idx.some(k=>Q.picks[k]&&!Q.res[k])) row.appendChild(pillBtn("ghost","Fehler trainieren",()=>openFix(subj)));
+  end.appendChild(row); qz.appendChild(end);
+  if(scroll) dlg.scrollTop=scroll; else again.focus({preventScroll:true});
 }
 dlg.addEventListener("close",()=>clearInterval(timerId));
 
@@ -896,7 +1042,7 @@ function refreshTools(){
   document.getElementById("fcInfo").textContent=`${kn} von ${cs.length} Karten gelernt`;
   document.getElementById("fcRow").replaceChildren(pillBtn("cur",kn===cs.length?"Alle wiederholen":"Karten lernen",()=>openCards(subj)));
   const last=exams.filter(e=>e.s===subj)[0];
-  document.getElementById("exInfo").textContent = last ? `Zuletzt in ${name}: Note ${last.note} (${last.r}/${last.n})` : "";
+  document.getElementById("exInfo").textContent = last ? `Zuletzt in ${name}: Note ${last.note} (${fmtPts(last.r)}/${last.n}${last.p?" Punkte":""})` : "";
   document.getElementById("exRow").replaceChildren(pillBtn("cur",`${name}-Prüfung starten`,()=>openExam(subj)), pillBtn("both","Beide Fächer",()=>openExam("both")));
   renderQuizList(); renderHist(); renderSubjects(); renderResume();
 }
@@ -907,7 +1053,7 @@ function renderQuizList(){
     const st=standOf(window.QUIZ[ep.id]), s0=qstats[ep.id];
     const li=document.createElement("li"), t=h("div",{class:"t"});
     t.append(txt("small",null,ep.num), txt("b",null,ep.title),
-      txt("span",null, s0 ? `${s0.runs}× gemacht · bestes ${s0.best.r}/${s0.best.n} · ${pct(st.ok,st.total)} % sicher` : `${ep.id.endsWith("komplett")?"10 gemischte":window.QUIZ[ep.id].length} Fragen · noch nicht gemacht`));
+      txt("span",null, s0 ? `${s0.runs}× gemacht · bestes ${s0.best.r}/${s0.best.n} · ${pct(st.ok,st.total)} % sicher` : `${ep.id.endsWith("komplett")?10:Math.min(ROUND_N,window.QUIZ[ep.id].length)} von ${window.QUIZ[ep.id].length} Fragen pro Runde · noch nicht gemacht`));
     const b=h("button",{class:"pill",type:"button"},ICON_QUIZ+(s0?"Nochmal":"Starten")); b.onclick=()=>openQuiz(ep.id);
     li.append(t,b,miniBar(st)); ul.appendChild(li);
   });
@@ -919,7 +1065,7 @@ function renderHist(){
     const li=document.createElement("li");
     const n=txt("span","n",String(e.note)); n.style.color=e.s==="wk"?"var(--wk)":e.s==="gk"?"var(--gk)":"var(--fg)";
     const d=document.createElement("div");
-    d.append(txt("b",null,`${SUBJ[e.s]} · ${e.r} von ${e.n} richtig`), txt("div","d",new Date(e.d+"T12:00:00").toLocaleDateString("de-DE",{day:"numeric",month:"long",year:"numeric"})));
+    d.append(txt("b",null,`${SUBJ[e.s]} · ${fmtPts(e.r)} von ${e.n} ${e.p?"Punkten":"richtig"}`), txt("div","d",new Date(e.d+"T12:00:00").toLocaleDateString("de-DE",{day:"numeric",month:"long",year:"numeric"})));
     li.append(n,d); ul.appendChild(li);
   });
 }
